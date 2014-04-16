@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="xTesting">
+      <UniqueIdentifier>{a1fa3e9c-e782-417e-b768-46cee437bb99}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tools.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scenegraph.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="foxmath3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WeirdFailures.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+    <ClCompile Include="ContainedArrayContainer1.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commonheader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scenegraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="foxmath3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test4.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="StructArray1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="StructArrayContainer1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="StructContainer1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test2.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedLists5.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList4.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedLists6.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList2.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeContainerTest.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeStringContainer.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="owner_approval.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="index-within.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="CombiningInvariants1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test5.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex.shader" />
+    <None Include="fragment.shader" />
+  </ItemGroup>
+</Project>
