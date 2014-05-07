@@ -22,7 +22,7 @@ typedef struct HEEdge
 {
 	HEVert* vert;	//vert at end of halfedge
 	HEEdge* pair;	//opposite halfedge
-	HEFace* face;	//face bordering halfedge
+	HEFace* face;	//face bordering halfedge inside right hand rule
 	HEEdge* next;	//next one around face
 	//_(ghost size_t vertindexwit)
 	//_(ghost size_t pairindexwit)
@@ -124,9 +124,21 @@ typedef _(dynamic_owns) struct Mesh
 
 
 	//EDGES
+	//Ownership of pointed-to parts
+	_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
+		\mine(edges[i].pair) &&
+		\mine(edges[i].next) //&&
+		//\mine(edges[i].vert) &&
+		//\mine(edges[i].face)
+	)
+
+	_(invariant \forall size_t i; {edges+i} i < numedges ==>
+		\mine(edges[i].pair->next)
+	)
 
 	_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
-		\mine(edges[i].pair) && \mine(edges[i].pair->pair)
+		//\mine(edges[i].pair) &&
+		\mine(edges[i].pair->pair)
 	)
 	_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>
 		//pair's pair matches self

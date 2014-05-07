@@ -62,9 +62,9 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->verts[1].edge = &dis->edges[1];
 	dis->verts[2].edge = &dis->edges[2];
 
-	_(ghost dis->verts[0].edgeindexwit = 0)
-	_(ghost dis->verts[1].edgeindexwit = 1)
-	_(ghost dis->verts[2].edgeindexwit = 2)
+	//_(ghost dis->verts[0].edgeindexwit = 0)
+	//_(ghost dis->verts[1].edgeindexwit = 1)
+	//_(ghost dis->verts[2].edgeindexwit = 2)
 
 	_(ghost {
 	dis->\owns += &dis->verts[0];
@@ -81,17 +81,17 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->edges[1].vert = &dis->verts[2];
 	dis->edges[2].vert = &dis->verts[0];
 
-	_(ghost dis->edges[0].vertindexwit = 1)
-	_(ghost dis->edges[1].vertindexwit = 2)
-	_(ghost dis->edges[2].vertindexwit = 0)
+	//_(ghost dis->edges[0].vertindexwit = 1)
+	//_(ghost dis->edges[1].vertindexwit = 2)
+	//_(ghost dis->edges[2].vertindexwit = 0)
 	
 	dis->edges[3].vert = &dis->verts[0];
 	dis->edges[4].vert = &dis->verts[1];
 	dis->edges[5].vert = &dis->verts[2];
 
-	_(ghost dis->edges[3].vertindexwit = 0)
-	_(ghost dis->edges[4].vertindexwit = 1)
-	_(ghost dis->edges[5].vertindexwit = 2)
+	//_(ghost dis->edges[3].vertindexwit = 0)
+	//_(ghost dis->edges[4].vertindexwit = 1)
+	//_(ghost dis->edges[5].vertindexwit = 2)
 
 	dis->edges[0].pair = &dis->edges[3];
 	dis->edges[1].pair = &dis->edges[4];
@@ -100,44 +100,44 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->edges[4].pair = &dis->edges[1];
 	dis->edges[5].pair = &dis->edges[2];
 
-	_(ghost dis->edges[0].pairindexwit = 3)
-	_(ghost dis->edges[1].pairindexwit = 4)
-	_(ghost dis->edges[2].pairindexwit = 5)
-	_(ghost dis->edges[3].pairindexwit = 0)
-	_(ghost dis->edges[4].pairindexwit = 1)
-	_(ghost dis->edges[5].pairindexwit = 2)
+	//_(ghost dis->edges[0].pairindexwit = 3)
+	//_(ghost dis->edges[1].pairindexwit = 4)
+	//_(ghost dis->edges[2].pairindexwit = 5)
+	//_(ghost dis->edges[3].pairindexwit = 0)
+	//_(ghost dis->edges[4].pairindexwit = 1)
+	//_(ghost dis->edges[5].pairindexwit = 2)
 
 	dis->edges[0].next = &dis->edges[1];
 	dis->edges[1].next = &dis->edges[2];
 	dis->edges[2].next = &dis->edges[0];
 
-	_(ghost dis->edges[0].nextindexwit = 1)
-	_(ghost dis->edges[1].nextindexwit = 2)
-	_(ghost dis->edges[2].nextindexwit = 0)
+	//_(ghost dis->edges[0].nextindexwit = 1)
+	//_(ghost dis->edges[1].nextindexwit = 2)
+	//_(ghost dis->edges[2].nextindexwit = 0)
 
 	dis->edges[3].next = &dis->edges[4];
 	dis->edges[4].next = &dis->edges[5];
 	dis->edges[5].next = &dis->edges[3];
 
-	_(ghost dis->edges[3].nextindexwit = 4)
-	_(ghost dis->edges[4].nextindexwit = 5)
-	_(ghost dis->edges[5].nextindexwit = 3)
+	//_(ghost dis->edges[3].nextindexwit = 4)
+	//_(ghost dis->edges[4].nextindexwit = 5)
+	//_(ghost dis->edges[5].nextindexwit = 3)
 
 	dis->edges[0].face = &dis->faces[0];
 	dis->edges[1].face = &dis->faces[0];
 	dis->edges[2].face = &dis->faces[0];
 
-	_(ghost dis->edges[0].faceindexwit = 0)
-	_(ghost dis->edges[1].faceindexwit = 0)
-	_(ghost dis->edges[2].faceindexwit = 0)
+	//_(ghost dis->edges[0].faceindexwit = 0)
+	//_(ghost dis->edges[1].faceindexwit = 0)
+	//_(ghost dis->edges[2].faceindexwit = 0)
 
 	dis->edges[3].face = &dis->faces[1];
 	dis->edges[4].face = &dis->faces[1];
 	dis->edges[5].face = &dis->faces[1];
 
-	_(ghost dis->edges[3].faceindexwit = 1)
-	_(ghost dis->edges[4].faceindexwit = 1)
-	_(ghost dis->edges[5].faceindexwit = 1)
+	//_(ghost dis->edges[3].faceindexwit = 1)
+	//_(ghost dis->edges[4].faceindexwit = 1)
+	//_(ghost dis->edges[5].faceindexwit = 1)
 
 	_(ghost {
 	dis->\owns += &dis->edges[0];
@@ -158,11 +158,11 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 
 	dis->faces[0].edge = &dis->edges[0];
 	dis->faces[0].normal = Vec3GenVec3(0,0,1);
-	_(ghost dis->faces[0].edgeindexwit = 0)
+	//_(ghost dis->faces[0].edgeindexwit = 0)
 
 	dis->faces[1].edge = &dis->edges[3];
 	dis->faces[1].normal = Vec3GenVec3(0.0f,0.0f, 0-1.0f);
-	_(ghost dis->faces[1].edgeindexwit = 3)
+	//_(ghost dis->faces[1].edgeindexwit = 3)
 
 	_(ghost	{
 	dis->\owns += &dis->faces[0];
@@ -189,20 +189,24 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 //Functions to grow or shrink the internal arrays
 void MeshGrowEdges(Mesh *m)
 	_(updates m);
+
 void MeshShrinkEdges(Mesh *m)
 	_(updates m);
 
 void MeshEnsureVertCapacityChange(Mesh *m, int change)
 	_(updates m)
 	_(ensures ((\integer)m->capverts - (\integer)m->numverts) >= change);
+
 void MeshEnsureEdgeCapacityChange(Mesh *m, int change)
 	_(updates m)
 	_(ensures ((\integer)m->capedges - (\integer)m->numedges) >= change);
+
 void MeshEnsureFaceCapacityChange(Mesh *m, int change)
 	_(updates m)
 	_(ensures ((\integer)m->capfaces - (\integer)m->numfaces) >= change);
 
 //SPLIT AN EDGE AT ITS CENTER, THEN SEW THE MESH BACK UP
+//Requires that additional storage for new parts already exists.
 void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(updates m)
 	_(requires e \in m->\owns)
@@ -218,8 +222,10 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(ensures m->numfaces == \old(m->numfaces)+2)
 {
 	_(assert e->pair \in m->\owns)
+	_(assert e->next \in m->\owns)
 	_(assert e->pair->next \in m->\owns)
 	//here's where those witnesses would help!
+
 _(unwrapping m)
 {
 	HEEdge* e1 = e;
@@ -228,17 +234,38 @@ _(unwrapping m)
 	HEEdge* e4 = e->pair;
 	HEEdge* e5 = e->pair->next;
 	HEEdge* e6 = e->pair->next->next;
-	HEEdge* e7 = m->edges+m->numedges+0;
-	HEEdge* e8 = m->edges+m->numedges+1;
-	HEEdge* e9 = m->edges+m->numedges+2;
-	HEEdge* e10 = m->edges+m->numedges+3;
-	HEEdge* e11 = m->edges+m->numedges+4;
-	HEEdge* e12 = m->edges+m->numedges+5;
+	HEEdge* e7 = m->edges + m->numedges+0;
+	HEEdge* e8 = m->edges + m->numedges+1;
+	HEEdge* e9 = m->edges + m->numedges+2;
+	HEEdge* e10 = m->edges + m->numedges+3;
+	HEEdge* e11 = m->edges + m->numedges+4;
+	HEEdge* e12 = m->edges + m->numedges+5;
 
+	HEVert* v1 = e->pair->vert;
+	HEVert* v2 = e->vert;
+	HEVert* v3 = m->verts + m->numverts+0;
+
+	HEFace* f1 = e->face;
+	HEFace* f2 = e->pair->face;
+	HEFace* f3 = m->faces + m->numfaces+0;
+	HEFace* f4 = m->faces + m->numfaces+1;
+
+	//Now reassign things
+
+	_(wrap m->edges+m->numedges+0)
+	_(ghost {
+		m->\owns += m->edges + m->numedges+0;
+		m->\owns += m->edges + m->numedges+1;
+		m->\owns += m->edges + m->numedges+2;
+		m->\owns += m->edges + m->numedges+3;
+		m->\owns += m->edges + m->numedges+4;
+		m->\owns += m->edges + m->numedges+5;
+	})
 
 
 	m->numverts += 1;
 	m->numedges += 3;
 	m->numfaces += 2;
 }
+
 }
