@@ -4,9 +4,11 @@
 
 #include "foxmath3.h"
 
+
 typedef struct HEVert HEVert;
 typedef struct HEFace HEFace;
 typedef struct HEEdge HEEdge;
+
 
 typedef struct HEVert
 {
@@ -17,6 +19,7 @@ typedef struct HEVert
 
 	//_(invariant \approves(\this->\owner, edge))
 } HEVert;
+
 
 typedef struct HEEdge
 {
@@ -35,6 +38,7 @@ typedef struct HEEdge
 	//_(invariant \approves(\this->\owner, next))
 } HEEdge;
 
+
 typedef struct HEFace
 {
 	HEEdge* edge;	//some halfedge around face
@@ -45,9 +49,12 @@ typedef struct HEFace
 	//_(invariant \approves(\this->\owner, edge))
 } HEFace;
 
+
 //typedef struct Mesh
 typedef _(dynamic_owns) struct Mesh
 {
+	//MEMBERS
+
 	size_t numverts;
 	size_t numedges;
 	size_t numfaces;
@@ -59,6 +66,9 @@ typedef _(dynamic_owns) struct Mesh
 	HEVert* verts;
 	HEEdge* edges;
 	HEFace* faces;
+
+
+	//INVARIANTS
 
 	_(invariant capverts >= numverts)
 	_(invariant capedges >= numedges)
