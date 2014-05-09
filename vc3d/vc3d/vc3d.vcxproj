@@ -32,11 +32,9 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="..\..\VCC_INCLUDE_DIR.props" />
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="..\..\VCC_INCLUDE_DIR.props" />
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -90,10 +88,12 @@
     <ClInclude Include="CombiningInvariants1.h" />
     <ClInclude Include="commonheader.h" />
     <ClInclude Include="foxmath3.h" />
+    <ClInclude Include="VarSizeList1.h" />
     <ClInclude Include="index-within.h" />
     <ClInclude Include="owner_approval.h" />
     <ClInclude Include="PairedLists5.h" />
     <ClInclude Include="PairedLists6.h" />
+    <ClInclude Include="PairedListsWorking.h" />
     <ClInclude Include="PairList2.h" />
     <ClInclude Include="PairList3.h" />
     <ClInclude Include="PairList4.h" />

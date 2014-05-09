@@ -100,10 +100,15 @@ typedef _(dynamic_owns) struct Mesh
 	_(invariant \malloc_root(facesao))
 
 	//Array Elements are all \mine
-	_(invariant \forall size_t i; {verts+i} i < numverts ==> \mine(&verts[i]))
-	_(invariant \forall size_t i; {faces+i} i < numfaces ==> \mine(&faces[i]))
-	_(invariant \forall size_t i; {edges+i} i < numedges ==> \mine(&edges[i]))
+	_(invariant \forall size_t i; {verts+i} i < capverts ==> \mine(&verts[i]))
+	_(invariant \forall size_t i; {faces+i} i < capfaces ==> \mine(&faces[i]))
+	_(invariant \forall size_t i; {edges+i} i < capedges ==> \mine(&edges[i]))
 	
+	//
+	_(invariant \forall size_t i; {verts+i} (i >= numverts && i < capverts) ==>
+		(verts+i)->\valid
+	)
+
 	//All pointed-to structures also belong to this mesh
 	_(invariant \forall size_t i; /*{verts+i}*/ i < numverts ==>
 		\in_array(verts[i].edge, edges, numedges)

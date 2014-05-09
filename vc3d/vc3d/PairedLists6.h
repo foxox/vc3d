@@ -4,7 +4,7 @@
 //Works with size==2 fixed.
 
 #include <vcc.h>
-#include <stdlib.h>	//malloc
+#include <cstdlib>	//malloc
 
 #ifdef VERIFY
 	#define speccast(_TYPE_, _EXPR_) ((_TYPE_)(_EXPR_))

@@ -115,6 +115,12 @@
     <ClInclude Include="test5.h">
       <Filter>xTesting</Filter>
     </ClInclude>
+    <ClInclude Include="PairedListsWorking.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="VarSizeList1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.shader" />

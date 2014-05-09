@@ -226,6 +226,8 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(assert e->pair->next \in m->\owns)
 	//here's where those witnesses would help!
 
+	_(assert m->edges+m->numedges+0 \in m->\owns)
+
 _(unwrapping m)
 {
 	HEEdge* e1 = e;
@@ -252,16 +254,22 @@ _(unwrapping m)
 
 	//Now reassign things
 
-	_(wrap m->edges+m->numedges+0)
-	_(ghost {
-		m->\owns += m->edges + m->numedges+0;
-		m->\owns += m->edges + m->numedges+1;
-		m->\owns += m->edges + m->numedges+2;
-		m->\owns += m->edges + m->numedges+3;
-		m->\owns += m->edges + m->numedges+4;
-		m->\owns += m->edges + m->numedges+5;
-	})
+	//_(assert (m->edges+m->numedges+0)->\owner == \me)
+	//_(assert (m->edges+m->numedges+0)->\closed)
+	//_(assert \mutable(m->edges+m->numedges+0))
 
+	_(unwrapping m->edgesao)
+	{
+		_(wrap m->edges+m->numedges+0)
+		_(ghost {
+			m->\owns += m->edges + m->numedges+0;
+			m->\owns += m->edges + m->numedges+1;
+			m->\owns += m->edges + m->numedges+2;
+			m->\owns += m->edges + m->numedges+3;
+			m->\owns += m->edges + m->numedges+4;
+			m->\owns += m->edges + m->numedges+5;
+		})
+	}
 
 	m->numverts += 1;
 	m->numedges += 3;

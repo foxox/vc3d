@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vcc.h>
-#include <stdlib.h>	//malloc
+#include <cstdlib>	//malloc
 typedef unsigned int uint;
 
 typedef struct Paired Paired;
