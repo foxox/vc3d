@@ -66,9 +66,14 @@ typedef _(dynamic_owns) struct Mesh
 	HEEdge* edges;
 	HEFace* faces;
 
+	//GHOST MEMBERS
+	_(ghost HEEdge* edgeset[] = {};)
+	_(ghost HEVert* vertset[] = {};)
+	_(ghost HEFace* faceset[] = {};)
+
 
 	//INVARIANTS
-
+	
 
 	//Sizes
 	_(invariant capverts >= numverts)
@@ -111,148 +116,63 @@ typedef _(dynamic_owns) struct Mesh
 	//_(invariant \forall size_t i; {verts+i} i < capverts ==> \mine(&verts[i]))
 	//_(invariant \forall size_t i; {faces+i} i < capfaces ==> \mine(&faces[i]))
 	//_(invariant \forall size_t i; {edges+i} i < capedges ==> \mine(&edges[i]))
-	_(invariant \forall size_t i; {&verts[i]} i < capverts ==> \mine(&verts[i]))
-	_(invariant \forall size_t i; {&faces[i]} i < capfaces ==> \mine(&faces[i]))
-	_(invariant \forall size_t i; {&edges[i]} i < capedges ==> \mine(&edges[i]))
 
-	
-	//All pointed-to structures also belong to this mesh.
-	//Verts, then Edges, then Faces
+
+
 
 	//Verts
-	_(invariant \forall size_t i; {&verts[i]} i < numverts ==>
-		\in_array(verts[i].edge, edges, numedges)
-	)
+	//_(invariant \forall size_t i; {&verts[i]} i < capverts ==> \mine(&verts[i]))
+	//_(invariant \forall size_t i; {&verts[i]} i < numverts ==>
+	//	\in_array(verts[i].edge, edges, numedges)
+	//	&&
+	//	\mine(verts[i].edge)
+	//)
 	
+
 	//Edges
-	//	//Should be able to replace the \mine in the below invariant, but can't (without VCC running out of memory).
-	//	//_(invariant \forall size_t i; {&edges[i].vert} i < numedges ==> \mine(edges[i].vert))
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	//\mine(&edges[i]) &&	//Not needed thanks to proper trigger on the \mine invariant above
-	//	//NEEDED FOR VERIFICATION, BUT SHOULDN'T BE. SEE INVARIANT ABOVE THIS ONE.
-	//	\mine(edges[i].vert) &&
-	//	//(\exists size_t j; j < numverts && edges[i].vert == &verts[j]) &&	//doesn't work, but \in_array does
-	//	\in_array(edges[i].vert, verts, numverts)
-	//)
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	\in_array(edges[i].pair, edges, numedges)
-	//)
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	\in_array(edges[i].face, faces, numfaces)
-	//)
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	\in_array(edges[i].next, edges, numedges)
-	//)
 
-	//Should be able to replace the \mine in the below invariant, but can't (without VCC running out of memory).
-		//_(invariant \forall size_t i; {&edges[i].vert} i < numedges ==> \mine(edges[i].vert))
-	_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-		//\mine(&edges[i]) &&	//Not needed thanks to proper trigger on the \mine invariant above
+	_(invariant \forall size_t i; \in_array(&edges[i], edges, numedges) ==> i < numedges)
 
-		//NEEDED FOR VERIFICATION, BUT SHOULDN'T BE. SEE INVARIANT ABOVE THIS ONE.
-		\mine(edges[i].vert) &&
-		
-		//(\exists size_t j; j < numverts && edges[i].vert == &verts[j]) &&	//doesn't work, but \in_array does
+	_(invariant \forall size_t i; {&edges[i]} i < capedges ==> \mine(&edges[i]))
+	_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>
 		\in_array(edges[i].vert, verts, numverts) &&
 		\in_array(edges[i].pair, edges, numedges) &&
 		\in_array(edges[i].face, faces, numfaces) &&
-		\in_array(edges[i].next, edges, numedges)
+		\in_array(edges[i].next, edges, numedges) &&
+
+		//\mine(edges[i].pair) &&
+		//\mine(edges[i].next) &&
+		\mine(edges[i].vert) &&
+		//\mine(edges[i].face)
+		
+		//\mine(edges[i].pair->next) &&
+		//Why is this needed?
+		//\mine(edges[i].pair->next->next) &&
+
+		//\mine(edges[i].pair) &&
+		//\mine(edges[i].pair->pair) &&
+	
+	
+		//pair's pair matches self
+		//NEEDED FOR VERIFICATION UNLESS ABOVE STATEMENT ALSO PRESENT
+		//\mine(edges[i].pair) && \mine(edges[i].pair->pair) &&
+		&edges[i] == edges[i].pair->pair &&
+	
+		//next ring gets back to this edge after going around the triangle
+		//\mine(edges[i].next) &&
+		//\mine(edges[i].next->next) &&
+		\mine(edges[i].next->next->next) &&
+		&edges[i] == edges[i].next->next->next
 	)
 
-	
+
 	//Faces
-	_(invariant \forall size_t i; {faces+i} i < numfaces ==>
+	_(invariant \forall size_t i; {&faces[i]} i < capfaces ==> \mine(&faces[i]))
+	_(invariant \forall size_t i; /*{faces+i}*/ i < numfaces ==>
 		\in_array(faces[i].edge, edges, numedges)
 	)
 
 
-	//VERTS
-
-	//I'm not sure there is really any structure that is best captured with a vert as a starting point
-	//Might be able to prevent mesh holes here?
-
-
-	//EDGES
-	//Ownership of pointed-to parts
-	_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
-		\mine(edges[i].pair) &&
-		\mine(edges[i].next) //&&
-		//\mine(edges[i].vert) &&
-		//\mine(edges[i].face)
-	)
-
-	_(invariant \forall size_t i; {edges+i} i < numedges ==>
-		\mine(edges[i].pair->next)
-	)
-
-	_(invariant \forall size_t i; {edges+i} i < numedges ==>
-		//\mine(edges[i].pair) &&
-		\mine(edges[i].pair->pair)
-	)
-	_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>
-		//pair's pair matches self
-
-		//NEEDED FOR VERIFICATION UNLESS ABOVE STATEMENT ALSO PRESENT
-		//\mine(edges[i].pair) && \mine(edges[i].pair->pair) &&
-		
-		&edges[i] == edges[i].pair->pair
-	)
-
-	//_(invariant \forall size_t i; {edges[i].next} i < numedges ==> \mine(edges[i].next) )
-	_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>
-		//next ring gets back to this edge after going around the triangle
-		\mine(edges[i].next) && \mine(edges[i].next->next) && \mine(edges[i].next->next->next) &&
-		edges+i == edges[i].next->next->next
-	)
-
-
-	//Why is this needed?
-	//_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
-	//	\mine(edges[i].pair->next->next)
-	//)
-	//_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
-	//	\mine(edges[i].pair->vert)
-	//)
-	//Verification fails for memory usage when I add these
-	//_(invariant \forall size_t i; {edges+i} i < numedges ==>
-	//	\mine(edges[i].vert)
-	//)
-	//_(invariant \forall size_t i; {edges+i} i < numedges ==>
-	//	\mine(edges[i].pair->face)
-	//)
-
-
-	//FACES 
-
-	//Ignore all of this: old stuff that I haven't gotten to reviewing yet
-
-	//_(invariant \forall size_t i; i < numfaces ==>
-	//	\mine(&faces[i]) &&
-
-	//	\mine(faces[i].edge) &&
-	//	/*(\exists size_t j; j < numedges &&
-	//		\mine(&edges[j]) &&
-	//		\mine(faces[i].edge) &&
-	//		faces[i].edge == &edges[j]
-	//	) &&*/
-
-	//	\mine(faces[i].edge->next) &&
-	//	\mine(faces[i].edge->next->next) &&
-	//	\mine(faces[i].edge->next->next->next) &&
-
-	//	//face's edge points back to face
-	//	faces[i].edge->face == &faces[i] &&
-	//	//face's edge's face pointer points back to the face
-	//
-	//	//next face matches
-	//	faces[i].edge->next->face == &faces[i] &&
-
-	//	//next next face matches (2/3 of the way around the triangle)
-	//	faces[i].edge->next->next->face == &faces[i] &&
-
-	//	//complete triangles (go around far enough to return)
-	//	faces[i].edge->next->next->next == faces[i].edge
-	//)
 
 } Mesh;
 

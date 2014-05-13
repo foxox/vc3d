@@ -173,15 +173,15 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 
 
 	//Array Objects
-	_(ghost dis->vertsao = (HEVert[dis->capverts])dis->verts )
-	_(ghost dis->edgesao = (HEVert[dis->capedges])dis->edges )
-	_(ghost dis->facesao = (HEVert[dis->capfaces])dis->faces )
-	_(ghost dis->\owns += dis->vertsao)
-	_(ghost dis->\owns += dis->edgesao)
-	_(ghost dis->\owns += dis->facesao)
-	_(wrap dis->vertsao)
-	_(wrap dis->edgesao)
-	_(wrap dis->facesao)
+	//_(ghost dis->vertsao = (HEVert[dis->capverts])dis->verts )
+	//_(ghost dis->edgesao = (HEVert[dis->capedges])dis->edges )
+	//_(ghost dis->facesao = (HEVert[dis->capfaces])dis->faces )
+	//_(ghost dis->\owns += dis->vertsao)
+	//_(ghost dis->\owns += dis->edgesao)
+	//_(ghost dis->\owns += dis->facesao)
+	//_(wrap dis->vertsao)
+	//_(wrap dis->edgesao)
+	//_(wrap dis->facesao)
 
 	_(wrap dis)
 }
@@ -211,7 +211,6 @@ void MeshEnsureFaceCapacityChange(Mesh *m, int change)
 void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(updates m)
 	
-	//needed?
 	_(requires e \in m->\owns)
 	_(requires \in_array(e,m->edges,m->numedges) )
 	
@@ -225,9 +224,11 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(ensures m->numverts == \old(m->numverts)+1)
 	_(ensures m->numedges == \old(m->numedges)+6)
 	_(ensures m->numfaces == \old(m->numfaces)+2)
+
 {
-	//_(assert e->pair \in m->\owns)
-	//_(assert e->next \in m->\owns)
+	//Function Body 
+
+	//Guiding assertions
 	//_(assert e->pair->next \in m->\owns)
 	//here's where those witnesses would help!
 
@@ -262,6 +263,12 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	//_(assert e->pair->vert \in m->\owns)
 	_(assert v2 \in m->\owns)
 	//_(assert v3 \in m->\owns)
+
+	_(assert e->pair \in m->\owns)
+	_(assert \in_array(e->pair, m->edges, m->numedges))
+	_(assert \exists size_t i; &m->edges[i] == e->pair && m->edges[i].face \in m->\owns)
+	_(assert \in_array(e->pair->face, m->faces, m->numfaces))
+	_(assert e->pair->face \in m->\owns)
 
 	_(assert f2 \in m->\owns)
 	//Was working here last, trying to get the right guiding
@@ -358,13 +365,17 @@ _(unwrapping m)
 	_(unwrapping v3)
 		v3->edge = e9;
 
-	_(unwrapping f1, f2, f3, f4)
-	{
+	_(unwrapping f1)
 		f1->edge = e3;
+
+	_(unwrapping f2)
 		f2->edge = e5;
+	
+	_(unwrapping f3)
 		f3->edge = e6;
+
+	_(unwrapping f4)
 		f4->edge = e2;
-	}
 
 	m->numverts += 1;
 	m->numedges += 3;
