@@ -103,14 +103,9 @@ typedef _(dynamic_owns) struct Mesh
 	_(invariant \forall size_t i; {verts+i} i < capverts ==> \mine(&verts[i]))
 	_(invariant \forall size_t i; {faces+i} i < capfaces ==> \mine(&faces[i]))
 	_(invariant \forall size_t i; {edges+i} i < capedges ==> \mine(&edges[i]))
-	
-	//
-	_(invariant \forall size_t i; {verts+i} (i >= numverts && i < capverts) ==>
-		(verts+i)->\valid
-	)
 
 	//All pointed-to structures also belong to this mesh
-	_(invariant \forall size_t i; /*{verts+i}*/ i < numverts ==>
+	_(invariant \forall size_t i; {verts+i} i < numverts ==>
 		\in_array(verts[i].edge, edges, numedges)
 	)
 	
@@ -151,7 +146,7 @@ typedef _(dynamic_owns) struct Mesh
 		\mine(edges[i].pair->next)
 	)
 
-	_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
+	_(invariant \forall size_t i; {edges+i} i < numedges ==>
 		//\mine(edges[i].pair) &&
 		\mine(edges[i].pair->pair)
 	)
@@ -170,6 +165,22 @@ typedef _(dynamic_owns) struct Mesh
 		\mine(edges[i].next) && \mine(edges[i].next->next) && \mine(edges[i].next->next->next) &&
 		edges+i == edges[i].next->next->next
 	)
+
+
+	//Why is this needed?
+	_(invariant \forall size_t i; {edges+i} i < numedges ==>
+		\mine(edges[i].pair->next->next)
+	)
+	_(invariant \forall size_t i; {edges+i} i < numedges ==>
+		\mine(edges[i].pair->vert)
+	)
+	//Verification fails for memory usage when I add these
+	//_(invariant \forall size_t i; {edges+i} i < numedges ==>
+	//	\mine(edges[i].vert)
+	//)
+	//_(invariant \forall size_t i; {edges+i} i < numedges ==>
+	//	\mine(edges[i].pair->face)
+	//)
 
 
 	//FACES 

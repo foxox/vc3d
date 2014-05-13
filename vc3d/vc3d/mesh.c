@@ -205,70 +205,165 @@ void MeshEnsureFaceCapacityChange(Mesh *m, int change)
 	_(updates m)
 	_(ensures ((\integer)m->capfaces - (\integer)m->numfaces) >= change);
 
+
 //SPLIT AN EDGE AT ITS CENTER, THEN SEW THE MESH BACK UP
 //Requires that additional storage for new parts already exists.
 void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(updates m)
+	
+	//needed?
 	_(requires e \in m->\owns)
 	_(requires \in_array(e,m->edges,m->numedges) )
+	
 	//Verts +1
 	//Edges -2+4+4
 	//Faces -2+4
-	_(requires m->capverts-m->numverts > 1)
-	_(requires m->capedges-m->numedges > 6)
-	_(requires m->capfaces-m->numfaces > 2)
+	_(requires m->capverts-m->numverts >= 1)
+	_(requires m->capedges-m->numedges >= 6)
+	_(requires m->capfaces-m->numfaces >= 2)
+
 	_(ensures m->numverts == \old(m->numverts)+1)
 	_(ensures m->numedges == \old(m->numedges)+6)
 	_(ensures m->numfaces == \old(m->numfaces)+2)
 {
-	_(assert e->pair \in m->\owns)
-	_(assert e->next \in m->\owns)
-	_(assert e->pair->next \in m->\owns)
+	//_(assert e->pair \in m->\owns)
+	//_(assert e->next \in m->\owns)
+	//_(assert e->pair->next \in m->\owns)
 	//here's where those witnesses would help!
 
-	_(assert m->edges+m->numedges+0 \in m->\owns)
-
-_(unwrapping m)
-{
 	HEEdge* e1 = e;
 	HEEdge* e2 = e->next;
 	HEEdge* e3 = e->next->next;
 	HEEdge* e4 = e->pair;
 	HEEdge* e5 = e->pair->next;
 	HEEdge* e6 = e->pair->next->next;
-	HEEdge* e7 = m->edges + m->numedges+0;
-	HEEdge* e8 = m->edges + m->numedges+1;
-	HEEdge* e9 = m->edges + m->numedges+2;
-	HEEdge* e10 = m->edges + m->numedges+3;
-	HEEdge* e11 = m->edges + m->numedges+4;
-	HEEdge* e12 = m->edges + m->numedges+5;
+	HEEdge* e7 = m->edges + (m->numedges+0);
+	HEEdge* e8 = m->edges + (m->numedges+1);
+	HEEdge* e9 = m->edges + (m->numedges+2);
+	HEEdge* e10 = m->edges + (m->numedges+3);
+	HEEdge* e11 = m->edges + (m->numedges+4);
+	HEEdge* e12 = m->edges + (m->numedges+5);
 
 	HEVert* v1 = e->pair->vert;
 	HEVert* v2 = e->vert;
-	HEVert* v3 = m->verts + m->numverts+0;
+	HEVert* v3 = m->verts + (m->numverts+0);
 
 	HEFace* f1 = e->face;
 	HEFace* f2 = e->pair->face;
-	HEFace* f3 = m->faces + m->numfaces+0;
-	HEFace* f4 = m->faces + m->numfaces+1;
+	HEFace* f3 = m->faces + (m->numfaces+0);
+	HEFace* f4 = m->faces + (m->numfaces+1);
 
+	//_(assert e->pair \in m->\owns)
+	//_(assert e->pair->next \in m->\owns)
+	//_(assert e->pair->next->next \in m->\owns)
+	//_(assert e6 \in m->\owns)
+
+	//_(assert e->pair \in m->\owns)
+	//_(assert e->pair->vert \in m->\owns)
+	_(assert v2 \in m->\owns)
+	//_(assert v3 \in m->\owns)
+
+	_(assert f2 \in m->\owns)
+	//Was working here last, trying to get the right guiding
+	//assertions here so the rest goes through!
+
+_(unwrapping m)
+{
 	//Now reassign things
 
-	//_(assert (m->edges+m->numedges+0)->\owner == \me)
-	//_(assert (m->edges+m->numedges+0)->\closed)
-	//_(assert \mutable(m->edges+m->numedges+0))
-
-	_(unwrapping m->edgesao)
+	_(unwrapping e1)
 	{
-		_(wrap m->edges+m->numedges+0)
-		_(ghost {
-			m->\owns += m->edges + m->numedges+0;
-			m->\owns += m->edges + m->numedges+1;
-			m->\owns += m->edges + m->numedges+2;
-			m->\owns += m->edges + m->numedges+3;
-			m->\owns += m->edges + m->numedges+4;
-			m->\owns += m->edges + m->numedges+5;
-		})
+		e1->next = e7;
+		e1->pair = e9;
+		e1->vert = v3;
+	}
+
+	_(unwrapping e2)
+	{
+		e2->face = f4;
+		e2->next = e12;
+	}
+
+	_(unwrapping e3)
+		e3->face = f1;
+	
+	_(unwrapping e4)
+	{
+		e4->face = f3;
+		e4->next = e10;
+		e4->pair = e11;
+		e4->vert = v3;
+	}
+
+	_(unwrapping e5)
+		e5->next = e8;
+	
+	_(unwrapping e6)
+		e6->face = f3;
+	
+	_(unwrapping e7)
+	{
+		e7->face = f1;
+		e7->next = e3;
+		e7->pair = e12;
+		e7->vert = e2->vert;
+	}
+
+	_(unwrapping e8)
+	{
+		e8->face = f2;
+		e8->next = e9;
+		e8->pair = e10;
+		e8->vert = v3;
+	}
+
+	_(unwrapping e9)
+	{
+		e9->face = f2;
+		e9->next = e5;
+		e9->pair = e1;
+		e9->vert = v1;
+	}
+
+	_(unwrapping e10)
+	{
+		e10->face = f3;
+		e10->next = e6;
+		e10->pair = e8;
+		e10->vert = e5->vert;
+	}
+
+	_(unwrapping e11)
+	{
+		e11->face = f4;
+		e11->next = e2;
+		e11->pair = e4;
+		e11->vert = v2;
+	}
+
+	_(unwrapping e12)
+	{
+		e12->face = f4;
+		e12->next = e11;
+		e12->pair = e7;
+		e12->vert = v3;
+	}
+
+	_(unwrapping v1)
+		v1->edge = e1;
+	
+	_(unwrapping v2)
+		v2->edge = e4;
+
+	_(unwrapping v3)
+		v3->edge = e9;
+
+	_(unwrapping f1, f2, f3, f4)
+	{
+		f1->edge = e3;
+		f2->edge = e5;
+		f3->edge = e6;
+		f4->edge = e2;
 	}
 
 	m->numverts += 1;
