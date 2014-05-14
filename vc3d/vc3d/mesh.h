@@ -12,9 +12,9 @@ typedef struct HEEdge HEEdge;
 
 typedef struct HEVert
 {
-    Vec3 pos;
+	Vec3 pos;
 	Vec4 color;
-    HEEdge* edge;	//some halfedge coming from vert
+	HEEdge* edge;	//some halfedge coming from vert
 	//_(ghost size_t edgeindexwit)
 
 	//_(invariant \approves(\this->\owner, edge))
@@ -112,7 +112,7 @@ typedef _(dynamic_owns) struct Mesh
 	//_(invariant \forall size_t i; {faces+i} i < capfaces ==> \mine(&faces[i]))
 	//_(invariant \forall size_t i; {edges+i} i < capedges ==> \mine(&edges[i]))
 	_(invariant \forall size_t i; {&verts[i]} i < capverts ==> \mine(&verts[i]))
-	_(invariant \forall size_t i; {&faces[i]} i < capfaces ==> \mine(&faces[i]))
+	//_(invariant \forall size_t i; {&faces[i]} i < capfaces ==> \mine(&faces[i]))
 	_(invariant \forall size_t i; {&edges[i]} i < capedges ==> \mine(&edges[i]))
 
 	
@@ -125,24 +125,28 @@ typedef _(dynamic_owns) struct Mesh
 	)
 	
 	//Edges
-	//	//Should be able to replace the \mine in the below invariant, but can't (without VCC running out of memory).
-	//	//_(invariant \forall size_t i; {&edges[i].vert} i < numedges ==> \mine(edges[i].vert))
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	//\mine(&edges[i]) &&	//Not needed thanks to proper trigger on the \mine invariant above
-	//	//NEEDED FOR VERIFICATION, BUT SHOULDN'T BE. SEE INVARIANT ABOVE THIS ONE.
+	//Should be able to replace the \mine in the below invariant, but can't (without VCC running out of memory).
+	//_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
 	//	\mine(edges[i].vert) &&
-	//	//(\exists size_t j; j < numverts && edges[i].vert == &verts[j]) &&	//doesn't work, but \in_array does
-	//	\in_array(edges[i].vert, verts, numverts)
+	//	\mine(edges[i].pair) &&
+	//	\mine(edges[i].face) &&
+	//	\mine(edges[i].next)
 	//)
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	\in_array(edges[i].pair, edges, numedges)
-	//)
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	\in_array(edges[i].face, faces, numfaces)
-	//)
-	//_(invariant \forall size_t i; /*{&edges[i]}*/ i < numedges ==>
-	//	\in_array(edges[i].next, edges, numedges)
-	//)
+	_(invariant \forall size_t i;
+		{:hint \mine(&edges[i])}
+		//{:hint \mine(edges[i].vert)}
+		//{&edges[i]}
+		i < numedges ==>
+		
+		//\mine(&edges[i]) &&	//Not needed thanks to proper trigger on the \mine invariant above
+		//NEEDED FOR VERIFICATION, BUT SHOULDN'T BE. SEE INVARIANT ABOVE THIS ONE.
+		//\mine(edges[i].vert) &&
+		
+		   \in_array(edges[i].vert, verts, numverts)
+		//&& \in_array(edges[i].pair, edges, numedges)
+		//&& \in_array(edges[i].face, faces, numfaces)
+		//&& \in_array(edges[i].next, edges, numedges)
+	)
 
 	//Should be able to replace the \mine in the below invariant, but can't (without VCC running out of memory).
 		//_(invariant \forall size_t i; {&edges[i].vert} i < numedges ==> \mine(edges[i].vert))

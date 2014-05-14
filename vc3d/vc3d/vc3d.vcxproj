@@ -88,6 +88,12 @@
     <ClInclude Include="CombiningInvariants1.h" />
     <ClInclude Include="commonheader.h" />
     <ClInclude Include="foxmath3.h" />
+    <ClInclude Include="mesh1.h" />
+    <ClInclude Include="mesh3.h" />
+    <ClInclude Include="PairedVarList1.h" />
+    <ClInclude Include="PairedVarList2.h" />
+    <ClInclude Include="PairedVarList3.h" />
+    <ClInclude Include="PairedVarList4.h" />
     <ClInclude Include="VarSizeList1.h" />
     <ClInclude Include="index-within.h" />
     <ClInclude Include="owner_approval.h" />

@@ -121,6 +121,24 @@
     <ClInclude Include="VarSizeList1.h">
       <Filter>xTesting</Filter>
     </ClInclude>
+    <ClInclude Include="PairedVarList1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList2.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList4.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.shader" />
