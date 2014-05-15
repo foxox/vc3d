@@ -34,7 +34,7 @@ typedef _(dynamic_owns) struct PairedVarLists
 	PairedA* pairarray1;
 	PairedB* pairarray2;
 	//Require that the arrays do not overlap
-	_(invariant pairarray1 != pairarray2)
+	//_(invariant pairarray1 != pairarray2)
 	_(invariant \arrays_disjoint(pairarray1, cap1, pairarray2, cap2))
 
 	//Array objects (needed for free/dispose)
