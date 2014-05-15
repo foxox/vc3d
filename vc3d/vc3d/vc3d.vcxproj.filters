@@ -97,16 +97,7 @@
     <ClInclude Include="PairList3.h">
       <Filter>xTesting</Filter>
     </ClInclude>
-    <ClInclude Include="SafeContainerTest.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="SafeStringContainer.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
     <ClInclude Include="owner_approval.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="index-within.h">
       <Filter>xTesting</Filter>
     </ClInclude>
     <ClInclude Include="CombiningInvariants1.h">
