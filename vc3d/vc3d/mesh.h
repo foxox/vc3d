@@ -165,14 +165,16 @@ typedef _(dynamic_owns) struct Mesh
 	//	//\mine(edges[i].pair) &&
 	//	\mine(edges[i].pair->pair)
 	//)
-	//_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>
-	//	//pair's pair matches self
 
-	//	//NEEDED FOR VERIFICATION UNLESS ABOVE STATEMENT ALSO PRESENT
-	//	//\mine(edges[i].pair) && \mine(edges[i].pair->pair) &&
-	//	
-	//	&edges[i] == edges[i].pair->pair
-	//)
+	//Edge reflexive pairing invariant
+	_(invariant \forall size_t i;
+		//{:hint \mine(&edges[i]) }
+		//{:hint \mine(edges[i].pair) }
+		//{:hint \mine(edges[i].pair->pair) }
+		//{edges+i}
+		i < numedges ==>
+		edges[i].pair->pair == &edges[i]
+	)
 
 	////_(invariant \forall size_t i; {edges[i].next} i < numedges ==> \mine(edges[i].next) )
 	//_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>

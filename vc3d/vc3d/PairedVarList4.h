@@ -27,8 +27,8 @@ typedef _(dynamic_owns) struct PairedVarLists
 	//Size invariants
 	_(invariant num1 <= cap1)
 	_(invariant num2 <= cap2)
-	_(invariant cap1 > 0)
-	_(invariant cap2 > 0)
+	_(invariant cap1 > 0)// && cap1 <= 10000)
+	_(invariant cap2 > 0)// && cap2 <= 10000)
  
 	//Arrays storing Paired objects
 	PairedA* pairarray1;
@@ -48,22 +48,41 @@ typedef _(dynamic_owns) struct PairedVarLists
 	_(invariant \mine(arrayob1) && \mine(arrayob2))
  
 	//Ownership
-	_(invariant \forall \natural i; {&pairarray1[i]} i < cap1 ==>
+	_(invariant \forall size_t i; {&pairarray1[i]} i < cap1 ==>
 		\mine(&pairarray1[i])
 	)
-	_(invariant \forall \natural j; {&pairarray2[j]} j < cap2 ==>
+	_(invariant \forall size_t j; {&pairarray2[j]} j < cap2 ==>
 		\mine(&pairarray2[j])
 	)
 
 	//Pairing invariants
 	//Note that either the :hints or the \mine()s are needed
-	_(invariant \forall \natural i; {:hint \mine(&pairarray1[i])} i < num1 ==>
-		//\mine(&pairarray1[i]) &&
+	_(invariant \forall size_t i;
+		//{:hint \mine(&pairarray1[i])}
+		//{&pairarray1[i]}
+		i < num1 ==>
 		\in_array(pairarray1[i].pair, pairarray2, num2)
+		//&& pairarray1[i].pair->pair == &pairarray1[i]
 	)
-	_(invariant \forall \natural j; {:hint \mine(&pairarray2[j])} j < num2 ==>
-		//\mine(&pairarray2[j]) &&
+	_(invariant \forall size_t j;
+		//{:hint \mine(&pairarray2[j])}
+		//{&pairarray2[j]}
+		j < num2 ==>
 		\in_array(pairarray2[j].pair, pairarray1, num1)
+		//&& pairarray2[j].pair->pair == &pairarray2[j]
+	)
+
+	_(invariant \forall size_t i;
+		//{:hint \mine(&pairarray1[i]) }
+		//{:hint \in_array(pairarray1[i].pair, pairarray2, num2) }
+		i < num1 ==>
+		pairarray1[i].pair->pair == &pairarray1[i]
+	)
+	_(invariant \forall size_t j;
+		//{:hint \mine(&pairarray2[j]) }
+		//{:hint \in_array(pairarray2[j].pair, pairarray1, num1) }
+		j < num2 ==>
+		pairarray2[j].pair->pair == &pairarray2[j]
 	)
 } PairedVarLists;
  

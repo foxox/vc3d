@@ -51,15 +51,41 @@ typedef _(dynamic_owns) struct PairedVarLists
 		\mine(&pairarray2[j])
 	)
 
-	//Pairing invariants
+	//in_array invariants
 	//Note that either the :hints or the \mine()s are needed
-	_(invariant \forall \natural i; {:hint \mine(&pairarray1[i])} i < num1 ==>
+	_(invariant \forall \natural i;
+		{:hint \mine(&pairarray1[i])}
+		//{&pairarray1[i]}
+		i < num1 ==>
 		//\mine(&pairarray1[i]) &&
 		\in_array(pairarray1[i].pair, pairarray2, num2)
+		//&& pairarray1[i].pair->pair == &pairarray1[i]
 	)
-	_(invariant \forall \natural j; {:hint \mine(&pairarray2[j])} j < num2 ==>
+	_(invariant \forall \natural j;
+		{:hint \mine(&pairarray2[j])}
+		//{&pairarray2[j]}
+		j < num2 ==>
 		//\mine(&pairarray2[j]) &&
 		\in_array(pairarray2[j].pair, pairarray1, num1)
+		//&& pairarray2[j].pair->pair == &pairarray2[j]
+	)
+
+	//Pairing invariants
+	_(invariant \forall \natural i;
+		{:hint \mine(&pairarray1[i])}
+		{:hint \in_array(pairarray1[i].pair, pairarray2, num2) }
+		{:hint \mine(pairarray1[i].pair) }
+		//{:hint \in_array(pairarray1[i].pair->pair, pairarray1, num1) }
+		i < num1 ==>
+		pairarray1[i].pair->pair == &pairarray1[i]
+	)
+	_(invariant \forall \natural j;
+		{:hint \mine(&pairarray2[j]) }
+		{:hint \in_array(pairarray2[j].pair, pairarray1, num1) }
+		{:hint \mine(pairarray2[j].pair) }
+		//{:hint \in_array(pairarray2[j].pair->pair, pairarray2, num2) }
+		j < num2 ==>
+		pairarray2[j].pair->pair == &pairarray2[j]
 	)
 } PairedVarLists;
  
