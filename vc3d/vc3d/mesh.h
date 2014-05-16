@@ -111,78 +111,75 @@ typedef _(dynamic_owns) struct Mesh
 	//_(invariant \forall size_t i; {verts+i} i < capverts ==> \mine(&verts[i]))
 	//_(invariant \forall size_t i; {faces+i} i < capfaces ==> \mine(&faces[i]))
 	//_(invariant \forall size_t i; {edges+i} i < capedges ==> \mine(&edges[i]))
-	_(invariant \forall \natural i; {&verts[i]} i < capverts ==> \mine(&verts[i]))
-	_(invariant \forall \natural i; {&faces[i]} i < capfaces ==> \mine(&faces[i]))
-	_(invariant \forall \natural i; {&edges[i]} i < capedges ==> \mine(&edges[i]))
+	_(invariant \forall size_t i; {&verts[i]} i < capverts ==> \mine(&verts[i]))
+	_(invariant \forall size_t i; {&faces[i]} i < capfaces ==> \mine(&faces[i]))
+	_(invariant \forall size_t i; {&edges[i]} i < capedges ==> \mine(&edges[i]))
 
 	
 	//All pointed-to structures also belong to this mesh.
 	//Verts, then Edges, then Faces
 
 	//Verts
-	_(invariant \forall \natural i;
-		{:hint \mine(&verts[i]) }
+	_(invariant \forall size_t i;
+		//{:hint \mine(&verts[i]) }
 		//{&verts[i]}
 		i < numverts ==>
 		\in_array(verts[i].edge, edges, numedges)
 	)
 	
 	//Edges
-	_(invariant \forall \natural i;
-		{:hint \mine(&edges[i]) }
+	_(invariant \forall size_t i;
+		//{:hint \mine(&edges[i]) }
 		//{&edges[i]}
 		i < numedges ==>
 		
+		//Pointers from edge are valid
 		\in_array(edges[i].vert, verts, numverts)
 		&& \in_array(edges[i].pair, edges, numedges)
 		&& \in_array(edges[i].face, faces, numfaces)
 		&& \in_array(edges[i].next, edges, numedges)
+		//These shouldn't be needed but I can't find a way around having them here without the admissibility check exhausting memory
+		&& \mine(edges[i].vert)
+		&& \mine(edges[i].pair)
+		&& \mine(edges[i].face)
+		&& \mine(edges[i].next)
+
+		//Paired edge invariant
+		&& edges[i].pair->pair == &edges[i]
+		&& edges[i].vert != edges[i].pair->vert
+
+		//Triangle structure
+		//I've tried a lot of ways to avoid needing the next line but I think they create matching loops
+		&& \in_array(edges[i].next->next, edges, numedges)
+		&& \in_array(edges[i].next->next->next, edges, numedges)
+		&& \mine(edges[i].next->next)
+		&& \mine(edges[i].next->next->next)
+		&& edges[i].next->next->next == &edges[i]
+
+		//All edges on triangle have the same face
+		&& \in_array(edges[i].next->face, faces, numfaces)
+		&& \in_array(edges[i].next->next->face, faces, numfaces)
+		&& \mine(edges[i].next->face)
+		&& \mine(edges[i].next->next->face)
+		&& edges[i].face == edges[i].next->face
+		&& edges[i].face == edges[i].next->next->face
 	)
 
 	//Faces
-	_(invariant \forall \natural i;
-		{:hint \mine(&faces[i]) }
+	_(invariant \forall size_t i;
+		//{:hint \mine(&faces[i]) }
 		//{&faces[i]}
 		i < numfaces ==>
+
+		//Pointers from face are valid
 		\in_array(faces[i].edge, edges, numedges)
+		&& \mine(faces[i].edge)
+
+		//This face's edge's face matches this face
+		&& \in_array(faces[i].edge->face, faces, numfaces)
+		&& \mine(faces[i].edge->face)
+		&& faces[i].edge->face == &faces[i]
 	)
-
-
-	////EDGES
-	////Ownership of pointed-to parts
-	//_(invariant \forall size_t i; {&edges[i]} i < numedges ==>
-	//	\mine(edges[i].pair) &&
-	//	\mine(edges[i].next) //&&
-	//	//\mine(edges[i].vert) &&
-	//	//\mine(edges[i].face)
-	//)
-
-	//_(invariant \forall size_t i; {edges+i} i < numedges ==>
-	//	\mine(edges[i].pair->next)
-	//)
-
-	//_(invariant \forall size_t i; {edges+i} i < numedges ==>
-	//	//\mine(edges[i].pair) &&
-	//	\mine(edges[i].pair->pair)
-	//)
-
-	//Edge reflexive pairing invariant
-	_(invariant \forall size_t i;
-		//{:hint \mine(&edges[i]) }
-		//{:hint \mine(edges[i].pair) }
-		//{:hint \mine(edges[i].pair->pair) }
-		//{edges+i}
-		i < numedges ==>
-		edges[i].pair->pair == &edges[i]
-	)
-
-	////_(invariant \forall size_t i; {edges[i].next} i < numedges ==> \mine(edges[i].next) )
-	//_(invariant \forall size_t i; /*{edges+i}*/ i < numedges ==>
-	//	//next ring gets back to this edge after going around the triangle
-	//	\mine(edges[i].next) && \mine(edges[i].next->next) && \mine(edges[i].next->next->next) &&
-	//	edges+i == edges[i].next->next->next
-	//)
-
 
 	//FACES 
 
@@ -190,13 +187,6 @@ typedef _(dynamic_owns) struct Mesh
 
 	//_(invariant \forall size_t i; i < numfaces ==>
 	//	\mine(&faces[i]) &&
-
-	//	\mine(faces[i].edge) &&
-	//	/*(\exists size_t j; j < numedges &&
-	//		\mine(&edges[j]) &&
-	//		\mine(faces[i].edge) &&
-	//		faces[i].edge == &edges[j]
-	//	) &&*/
 
 	//	\mine(faces[i].edge->next) &&
 	//	\mine(faces[i].edge->next->next) &&

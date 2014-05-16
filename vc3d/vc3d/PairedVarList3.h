@@ -1,7 +1,8 @@
 //100% WORKING PAIRED LISTS IMPLEMENTATION, modified for variable size list
 //Does not use witnesses
-//For Tumblr
- 
+
+//verifies with /z:/rs:1, not with 0, 2, 3, 
+
 #include <vcc.h>
 #include <stdlib.h>   //malloc
  
@@ -73,16 +74,16 @@ typedef _(dynamic_owns) struct PairedVarLists
 	//Pairing invariants
 	_(invariant \forall \natural i;
 		{:hint \mine(&pairarray1[i])}
-		{:hint \in_array(pairarray1[i].pair, pairarray2, num2) }
-		{:hint \mine(pairarray1[i].pair) }
+		//{:hint \in_array(pairarray1[i].pair, pairarray2, num2) }
+		//{:hint \mine(pairarray1[i].pair) }
 		//{:hint \in_array(pairarray1[i].pair->pair, pairarray1, num1) }
 		i < num1 ==>
 		pairarray1[i].pair->pair == &pairarray1[i]
 	)
 	_(invariant \forall \natural j;
 		{:hint \mine(&pairarray2[j]) }
-		{:hint \in_array(pairarray2[j].pair, pairarray1, num1) }
-		{:hint \mine(pairarray2[j].pair) }
+		//{:hint \in_array(pairarray2[j].pair, pairarray1, num1) }
+		//{:hint \mine(pairarray2[j].pair) }
 		//{:hint \in_array(pairarray2[j].pair->pair, pairarray2, num2) }
 		j < num2 ==>
 		pairarray2[j].pair->pair == &pairarray2[j]

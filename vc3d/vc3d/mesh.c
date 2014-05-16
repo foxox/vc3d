@@ -32,9 +32,9 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->numedges = 6;
 	dis->numfaces = 2;
 
-	dis->capverts = 2*dis->numverts;
-	dis->capedges = 2*dis->numedges;
-	dis->capfaces = 2*dis->numfaces;
+	dis->capverts = dis->numverts;
+	dis->capedges = dis->numedges;
+	dis->capfaces = dis->numfaces;
 
 	/*_(assert dis->numverts > 0)
 	_(assert dis->numedges > 0)
@@ -229,7 +229,8 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	//Function Body 
 
 	//Guiding assertions
-	//_(assert e->pair->next \in m->\owns)
+	_(assert e->next \in m->\owns)
+	_(assert e->pair->next \in m->\owns)
 	//here's where those witnesses would help!
 
 	HEEdge* e1 = e;
