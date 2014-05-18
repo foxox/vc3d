@@ -1,4 +1,4 @@
-#include "mesh.h"
+#include "mesh_witnesses.h"
 
 // http://www.flipcode.com/archives/The_Half-Edge_Data_Structure.shtml
 
@@ -36,10 +36,6 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->capedges = dis->numedges;
 	dis->capfaces = dis->numfaces;
 
-	/*_(assert dis->numverts > 0)
-	_(assert dis->numedges > 0)
-	_(assert dis->numfaces > 0)*/
-
 	dis->verts = malloc(dis->capverts*sizeof(HEVert));
 	dis->edges = malloc(dis->capedges*sizeof(HEEdge));
 	dis->faces = malloc(dis->capfaces*sizeof(HEFace));
@@ -62,9 +58,9 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->verts[1].edge = &dis->edges[1];
 	dis->verts[2].edge = &dis->edges[2];
 
-	//_(ghost dis->verts[0].edgeindexwit = 0)
-	//_(ghost dis->verts[1].edgeindexwit = 1)
-	//_(ghost dis->verts[2].edgeindexwit = 2)
+	_(ghost dis->verts[0].edgeindexwit = 0)
+	_(ghost dis->verts[1].edgeindexwit = 1)
+	_(ghost dis->verts[2].edgeindexwit = 2)
 
 	_(ghost {
 	dis->\owns += &dis->verts[0];
@@ -81,17 +77,17 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->edges[1].vert = &dis->verts[2];
 	dis->edges[2].vert = &dis->verts[0];
 
-	//_(ghost dis->edges[0].vertindexwit = 1)
-	//_(ghost dis->edges[1].vertindexwit = 2)
-	//_(ghost dis->edges[2].vertindexwit = 0)
+	_(ghost dis->edges[0].vertindexwit = 1)
+	_(ghost dis->edges[1].vertindexwit = 2)
+	_(ghost dis->edges[2].vertindexwit = 0)
 	
 	dis->edges[3].vert = &dis->verts[0];
 	dis->edges[4].vert = &dis->verts[1];
 	dis->edges[5].vert = &dis->verts[2];
 
-	//_(ghost dis->edges[3].vertindexwit = 0)
-	//_(ghost dis->edges[4].vertindexwit = 1)
-	//_(ghost dis->edges[5].vertindexwit = 2)
+	_(ghost dis->edges[3].vertindexwit = 0)
+	_(ghost dis->edges[4].vertindexwit = 1)
+	_(ghost dis->edges[5].vertindexwit = 2)
 
 	dis->edges[0].pair = &dis->edges[3];
 	dis->edges[1].pair = &dis->edges[4];
@@ -100,44 +96,44 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	dis->edges[4].pair = &dis->edges[1];
 	dis->edges[5].pair = &dis->edges[2];
 
-	//_(ghost dis->edges[0].pairindexwit = 3)
-	//_(ghost dis->edges[1].pairindexwit = 4)
-	//_(ghost dis->edges[2].pairindexwit = 5)
-	//_(ghost dis->edges[3].pairindexwit = 0)
-	//_(ghost dis->edges[4].pairindexwit = 1)
-	//_(ghost dis->edges[5].pairindexwit = 2)
+	_(ghost dis->edges[0].pairindexwit = 3)
+	_(ghost dis->edges[1].pairindexwit = 4)
+	_(ghost dis->edges[2].pairindexwit = 5)
+	_(ghost dis->edges[3].pairindexwit = 0)
+	_(ghost dis->edges[4].pairindexwit = 1)
+	_(ghost dis->edges[5].pairindexwit = 2)
 
 	dis->edges[0].next = &dis->edges[1];
 	dis->edges[1].next = &dis->edges[2];
 	dis->edges[2].next = &dis->edges[0];
 
-	//_(ghost dis->edges[0].nextindexwit = 1)
-	//_(ghost dis->edges[1].nextindexwit = 2)
-	//_(ghost dis->edges[2].nextindexwit = 0)
+	_(ghost dis->edges[0].nextindexwit = 1)
+	_(ghost dis->edges[1].nextindexwit = 2)
+	_(ghost dis->edges[2].nextindexwit = 0)
 
 	dis->edges[3].next = &dis->edges[4];
 	dis->edges[4].next = &dis->edges[5];
 	dis->edges[5].next = &dis->edges[3];
 
-	//_(ghost dis->edges[3].nextindexwit = 4)
-	//_(ghost dis->edges[4].nextindexwit = 5)
-	//_(ghost dis->edges[5].nextindexwit = 3)
+	_(ghost dis->edges[3].nextindexwit = 4)
+	_(ghost dis->edges[4].nextindexwit = 5)
+	_(ghost dis->edges[5].nextindexwit = 3)
 
 	dis->edges[0].face = &dis->faces[0];
 	dis->edges[1].face = &dis->faces[0];
 	dis->edges[2].face = &dis->faces[0];
 
-	//_(ghost dis->edges[0].faceindexwit = 0)
-	//_(ghost dis->edges[1].faceindexwit = 0)
-	//_(ghost dis->edges[2].faceindexwit = 0)
+	_(ghost dis->edges[0].faceindexwit = 0)
+	_(ghost dis->edges[1].faceindexwit = 0)
+	_(ghost dis->edges[2].faceindexwit = 0)
 
 	dis->edges[3].face = &dis->faces[1];
 	dis->edges[4].face = &dis->faces[1];
 	dis->edges[5].face = &dis->faces[1];
 
-	//_(ghost dis->edges[3].faceindexwit = 1)
-	//_(ghost dis->edges[4].faceindexwit = 1)
-	//_(ghost dis->edges[5].faceindexwit = 1)
+	_(ghost dis->edges[3].faceindexwit = 1)
+	_(ghost dis->edges[4].faceindexwit = 1)
+	_(ghost dis->edges[5].faceindexwit = 1)
 
 	_(ghost {
 	dis->\owns += &dis->edges[0];
@@ -158,11 +154,11 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 
 	dis->faces[0].edge = &dis->edges[0];
 	dis->faces[0].normal = Vec3GenVec3(0,0,1);
-	//_(ghost dis->faces[0].edgeindexwit = 0)
+	_(ghost dis->faces[0].edgeindexwit = 0)
 
 	dis->faces[1].edge = &dis->edges[3];
 	dis->faces[1].normal = Vec3GenVec3(0.0f,0.0f, 0-1.0f);
-	//_(ghost dis->faces[1].edgeindexwit = 3)
+	_(ghost dis->faces[1].edgeindexwit = 3)
 
 	_(ghost	{
 	dis->\owns += &dis->faces[0];

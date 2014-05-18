@@ -38,6 +38,9 @@
     <ClCompile Include="ContainedArrayContainer1.c">
       <Filter>xTesting</Filter>
     </ClCompile>
+    <ClCompile Include="mesh_witnesses.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="PairedVarList4.h">
       <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh_witnesses.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
