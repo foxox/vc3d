@@ -36,6 +36,8 @@ typedef struct HEEdge
 	//_(invariant \approves(\this->\owner, pair))
 	//_(invariant \approves(\this->\owner, face))
 	//_(invariant \approves(\this->\owner, next))
+
+	//_(ghost size_t selfwit)
 } HEEdge;
 
 
@@ -119,22 +121,25 @@ typedef _(dynamic_owns) struct Mesh
 	//All pointed-to structures also belong to this mesh.
 	//Verts, then Edges, then Faces
 
-	//Verts
-	_(invariant \forall size_t i;
-		//{:hint \mine(&verts[i]) }
-		//{&verts[i]}
-		i < numverts ==>
-		\in_array(verts[i].edge, edges, numedges)
-	)
+	////Verts
+	//_(invariant \forall size_t i;
+	//	//{:hint \mine(&verts[i]) }
+	//	//{&verts[i]}
+	//	i < numverts ==>
+	//	\in_array(verts[i].edge, edges, numedges)
+	//)
 	
 	//Edges
 	_(invariant \forall size_t i;
-		//{:hint \mine(&edges[i]) }
+		{:hint \mine(&edges[i]) }
 		//{&edges[i]}
 		i < numedges ==>
+
+		//\mine(&edges[i])
+		//edges[i].selfwit == i
 		
 		//Pointers from edge are valid
-		\in_array(edges[i].vert, verts, numverts)
+		/*&& */\in_array(edges[i].vert, verts, numverts)
 		&& \in_array(edges[i].pair, edges, numedges)
 		&& \in_array(edges[i].face, faces, numfaces)
 		&& \in_array(edges[i].next, edges, numedges)
@@ -165,21 +170,26 @@ typedef _(dynamic_owns) struct Mesh
 		&& edges[i].face == edges[i].next->next->face
 	)
 
-	//Faces
-	_(invariant \forall size_t i;
-		//{:hint \mine(&faces[i]) }
-		//{&faces[i]}
-		i < numfaces ==>
+	////Faces
+	//_(invariant \forall size_t i;
+	//	//{:hint \mine(&faces[i]) }
+	//	//{&faces[i]}
+	//	i < numfaces ==>
 
-		//Pointers from face are valid
-		\in_array(faces[i].edge, edges, numedges)
-		&& \mine(faces[i].edge)
+	//	//Pointers from face are valid
+	//	\in_array(faces[i].edge, edges, numedges)
+	//	&& \mine(faces[i].edge)
 
-		//This face's edge's face matches this face
-		&& \in_array(faces[i].edge->face, faces, numfaces)
-		&& \mine(faces[i].edge->face)
-		&& faces[i].edge->face == &faces[i]
-	)
+	//	//This face's edge's face matches this face
+	//	&& \in_array(faces[i].edge->face, faces, numfaces)
+	//	&& \mine(faces[i].edge->face)
+	//	&& faces[i].edge->face == &faces[i]
+	//)
+
+
+
+
+
 
 	//FACES 
 

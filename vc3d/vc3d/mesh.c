@@ -241,7 +241,7 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	HEEdge* e6 = e->pair->next->next;
 	HEEdge* e7 = m->edges + (m->numedges+0);
 	HEEdge* e8 = m->edges + (m->numedges+1);
-	HEEdge* e9 = m->edges + (m->numedges+2);
+	HEEdge* e9 = &m->edges[m->numedges+2];
 	HEEdge* e10 = m->edges + (m->numedges+3);
 	HEEdge* e11 = m->edges + (m->numedges+4);
 	HEEdge* e12 = m->edges + (m->numedges+5);
@@ -278,9 +278,32 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(assert f4 \in m->\owns)
 
 	_(assert \wrapped(m))
-	_(assert \exists size_t i; i < m->numedges && (e1 == &m->edges[i]))
-	//_(assert (\wrapped(m) && f1 \in m->\owns) ==> \wrapped(f1))
 
+
+	//_(assert e->pair \in m->\owns)
+	//_(assert e->pair->next \in m->\owns)
+	//_(assert e->pair->next->next \in m->\owns)
+
+	//_(assert e->pair \in m->\owns)
+	//_(assert e->pair->vert \in m->\owns)
+
+	//_(assert e->pair \in m->\owns)
+	//_(assert \in_array(e->pair, m->edges, m->numedges))
+	//_(assert \exists size_t i; &m->edges[i] == e->pair && m->edges[i].face \in m->\owns)
+	//_(assert \in_array(e->pair->face, m->faces, m->numfaces))
+	//_(assert e->pair->face \in m->\owns)
+
+_(unwrapping m)
+{
+	//Now reassign things
+
+	//_(assert \exists size_t i; i < m->numedges && (e1 == &m->edges[i]))
+	//_(assert e1->selfwit < m->numedges && &m->edges[e1->selfwit] == e1)
+	//_(assert \wrapped(m) && e1 \in m->\owns)
+	//_(assert (e1 \in m->\owns && \wrapped(m)) ==> \wrapped(e1))
+
+	_(assert e1->\owner == \me)
+	_(assert e1->\closed)
 	_(assert \wrapped(e1))
 	_(assert \wrapped(e2))
 	_(assert \wrapped(e3))
@@ -303,22 +326,10 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(assert \wrapped(f3))
 	_(assert \wrapped(f4))
 
-	//_(assert e->pair \in m->\owns)
-	//_(assert e->pair->next \in m->\owns)
-	//_(assert e->pair->next->next \in m->\owns)
 
-	//_(assert e->pair \in m->\owns)
-	//_(assert e->pair->vert \in m->\owns)
-
-	_(assert e->pair \in m->\owns)
-	_(assert \in_array(e->pair, m->edges, m->numedges))
-	_(assert \exists size_t i; &m->edges[i] == e->pair && m->edges[i].face \in m->\owns)
-	_(assert \in_array(e->pair->face, m->faces, m->numfaces))
-	_(assert e->pair->face \in m->\owns)
-
-_(unwrapping m)
-{
-	//Now reassign things
+	_(assert e9->\owner == \me)
+	_(assert e9->\closed)
+	_(assert !\writable(e9))
 
 	_(unwrapping e1)
 	{

@@ -136,7 +136,37 @@ void PairedVarListInit(PairedVarLists* dis)
  
 	_(wrap dis)  
 }
- 
+
+void PairedVarListGrow(PairedVarLists* dis)
+	_(requires dis->cap1-dis->num1 >= 2)
+	_(requires dis->cap2-dis->num2 >= 2)
+	_(updates dis)
+	_(ensures dis->num1 == \old(dis->num1 + 2))
+	_(ensures dis->num2 == \old(dis->num2 + 2))
+{
+	//_(assert &dis->pairarray1[dis->num1+0] \in dis->\owns)
+	//_(assert dis->pairarray1[dis->num1+0].\owner == dis)
+
+	_(unwrapping dis)
+	{
+		//_(assert dis->pairarray1[dis->num1+0].\owner == \me)
+
+		_(unwrapping &dis->pairarray1[dis->num1+0])
+		dis->pairarray1[dis->num1+0].pair = &dis->pairarray2[dis->num2+0];
+		_(unwrapping &dis->pairarray2[dis->num2+0])
+		dis->pairarray2[dis->num2+0].pair = &dis->pairarray1[dis->num1+0];
+
+		_(unwrapping &dis->pairarray1[dis->num1+1])
+		dis->pairarray1[dis->num1+1].pair = &dis->pairarray2[dis->num2+1];
+		_(unwrapping &dis->pairarray2[dis->num2+1])
+		dis->pairarray2[dis->num2+1].pair = &dis->pairarray1[dis->num1+1];
+		
+		dis->num1 += 2;
+		dis->num2 += 2;
+	}
+}
+
+
 void PairedVarListDispose(PairedVarLists* dis)
 	_(requires \wrapped(dis))
 	_(writes dis)

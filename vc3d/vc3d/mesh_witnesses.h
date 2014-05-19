@@ -121,10 +121,17 @@ typedef _(dynamic_owns) struct Mesh
 
 	//Verts
 	_(invariant \forall size_t i;
-		//{:hint \mine(&verts[i]) }
+		{:hint \mine(&verts[i]) }
+		{:hint verts[i].edgeindexwit < numedges}
 		//{&verts[i]}
 		i < numverts ==>
-		\in_array(verts[i].edge, edges, numedges)
+		//i < capverts
+		//\in_array(verts[i].edge, edges, numedges)
+
+		\mine(&verts[i])
+
+		&& verts[i].edgeindexwit < numedges
+		&& verts[i].edge == &edges[verts[i].edgeindexwit]
 	)
 	
 	//Edges
@@ -132,7 +139,7 @@ typedef _(dynamic_owns) struct Mesh
 		//{:hint \mine(&edges[i]) }
 		//{&edges[i]}
 		i < numedges ==>
-		
+		//i < capedges
 		//Pointers from edge are valid
 		//\in_array(edges[i].vert, verts, numverts)
 		//&& \in_array(edges[i].pair, edges, numedges)
@@ -156,11 +163,17 @@ typedef _(dynamic_owns) struct Mesh
 		&& edges[i].face == &faces[edges[i].faceindexwit]
 		&& edges[i].pair == &edges[edges[i].pairindexwit]
 		&& edges[i].next == &edges[edges[i].nextindexwit]
+	)
 
+	_(invariant \forall size_t i;
+		i < numedges ==>
+		//i < capedges
 		//Paired edge invariant
-		&& edges[i].pair->pair == &edges[i]
+		edges[i].pair->pair == &edges[i]
 		&& edges[i].vert != edges[i].pair->vert
-
+	//)
+	//_(invariant \forall size_t i;
+		//i < numedges ==>
 		//Triangle structure
 		//I've tried a lot of ways to avoid needing the next line but I think they create matching loops
 		//&& \in_array(edges[i].next->next, edges, numedges)
@@ -178,21 +191,21 @@ typedef _(dynamic_owns) struct Mesh
 		//&& edges[i].face == edges[i].next->next->face
 	)
 
-	//Faces
-	_(invariant \forall size_t i;
-		//{:hint \mine(&faces[i]) }
-		//{&faces[i]}
-		i < numfaces ==>
+	////Faces
+	//_(invariant \forall size_t i;
+	//	//{:hint \mine(&faces[i]) }
+	//	//{&faces[i]}
+	//	i < numfaces ==>
 
-		//Pointers from face are valid
-		\in_array(faces[i].edge, edges, numedges)
-		&& \mine(faces[i].edge)
+	//	//Pointers from face are valid
+	//	\in_array(faces[i].edge, edges, numedges)
+	//	&& \mine(faces[i].edge)
 
-		//This face's edge's face matches this face
-		&& \in_array(faces[i].edge->face, faces, numfaces)
-		&& \mine(faces[i].edge->face)
-		&& faces[i].edge->face == &faces[i]
-	)
+	//	//This face's edge's face matches this face
+	//	&& \in_array(faces[i].edge->face, faces, numfaces)
+	//	&& \mine(faces[i].edge->face)
+	//	&& faces[i].edge->face == &faces[i]
+	//)
 
 	//FACES 
 

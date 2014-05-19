@@ -136,6 +136,9 @@
     <ClInclude Include="mesh_witnesses.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NodeMatchingLoops01.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.shader" />

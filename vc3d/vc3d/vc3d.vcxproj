@@ -92,6 +92,7 @@
     <ClInclude Include="mesh1.h" />
     <ClInclude Include="mesh3.h" />
     <ClInclude Include="mesh_witnesses.h" />
+    <ClInclude Include="NodeMatchingLoops01.h" />
     <ClInclude Include="PairedVarList1.h" />
     <ClInclude Include="PairedVarList2.h" />
     <ClInclude Include="PairedVarList3.h" />
