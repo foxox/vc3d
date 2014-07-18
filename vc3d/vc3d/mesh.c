@@ -21,6 +21,8 @@ HEVert HEVertMat4TransformNormal(HEVert vert, Mat4 mat)
 }
 
 //INITIALIZE A UNIT TRIANGLE WITH TWO SIDES. THIS IS THE SIMPLEST MESH
+_(isolate_proof)
+// /b:/vcsMaxCost:10 /b:/vcsMaxSplits:100
 void MeshInitMeshUnitTriangle(Mesh* dis)
 	_(writes \extent(dis))
 	_(ensures \wrapped(dis))
@@ -208,6 +210,9 @@ void MeshEnsureFaceCapacityChange(Mesh *m, int change)
 
 //SPLIT AN EDGE AT ITS CENTER, THEN SEW THE MESH BACK UP
 //Requires that additional storage for new parts already exists.
+//100,10 split, 10, 100 split
+_(isolate_proof)
+// /b:/vcsMaxCost:10 /b:/vcsMaxSplits:100
 void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(updates m)
 	
@@ -246,38 +251,51 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	HEEdge* e11 = m->edges + (m->numedges+4);
 	HEEdge* e12 = m->edges + (m->numedges+5);
 
+	_(assert e \in m->\owns)
+	_(assert e->pair \in m->\owns)
+	_(assert \in_array(e,m->edges,m->numedges))
+	_(assert e->pair->vert \in m->\owns)
+
 	HEVert* v1 = e->pair->vert;
 	HEVert* v2 = e->vert;
 	HEVert* v3 = m->verts + (m->numverts+0);
+	
+	_(assert v1 \in m->\owns)
+	_(assert v2 \in m->\owns)
+	_(assert v3 \in m->\owns)
+	_(assert \in_array(v1, m->verts, m->numverts))
+	_(assert \in_array(v2, m->verts, m->numverts))
+	_(assert \exists size_t i; i < m->numverts && v1 == &m->verts[i])
+	_(assert \exists size_t i; i < m->numverts && v2 == &m->verts[i])
 
 	HEFace* f1 = e->face;
 	HEFace* f2 = e->pair->face;
 	HEFace* f3 = m->faces + (m->numfaces+0);
 	HEFace* f4 = m->faces + (m->numfaces+1);
 
-	_(assert e1 \in m->\owns)
-	_(assert e2 \in m->\owns)
-	_(assert e3 \in m->\owns)
-	_(assert e4 \in m->\owns)
-	_(assert e5 \in m->\owns)
-	_(assert e6 \in m->\owns)
-	_(assert e7 \in m->\owns)
-	_(assert e8 \in m->\owns)
-	_(assert e9 \in m->\owns)
-	_(assert e10 \in m->\owns)
-	_(assert e11 \in m->\owns)
-	_(assert e12 \in m->\owns)
+	//_(assert e1 \in m->\owns)
+	//_(assert e2 \in m->\owns)
+	//_(assert e3 \in m->\owns)
+	//_(assert e4 \in m->\owns)
+	//_(assert e5 \in m->\owns)
+	//_(assert e6 \in m->\owns)
+	//_(assert e7 \in m->\owns)
+	//_(assert e8 \in m->\owns)
+	//_(assert e9 \in m->\owns)
+	//_(assert e10 \in m->\owns)
+	//_(assert e11 \in m->\owns)
+	//_(assert e12 \in m->\owns)
 
-	_(assert v1 \in m->\owns)
-	_(assert v2 \in m->\owns)
-	_(assert v3 \in m->\owns)
+	//_(assert v1 \in m->\owns)
+	//_(assert v2 \in m->\owns)
+	//_(assert v3 \in m->\owns)
 
-	_(assert f1 \in m->\owns)
-	_(assert f2 \in m->\owns)
-	_(assert f3 \in m->\owns)
-	_(assert f4 \in m->\owns)
+	//_(assert f1 \in m->\owns)
+	//_(assert f2 \in m->\owns)
+	//_(assert f3 \in m->\owns)
+	//_(assert f4 \in m->\owns)
 
-	_(assert \wrapped(m))
+	//_(assert \wrapped(m))
 
 
 	//_(assert e->pair \in m->\owns)
@@ -293,43 +311,46 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	//_(assert \in_array(e->pair->face, m->faces, m->numfaces))
 	//_(assert e->pair->face \in m->\owns)
 
+
+	//_(assert e10 \in m->\owns)
+
 _(unwrapping m)
 {
 	//Now reassign things
-
+	//_(assert e10->next \in m->\owns)
 	//_(assert \exists size_t i; i < m->numedges && (e1 == &m->edges[i]))
 	//_(assert e1->selfwit < m->numedges && &m->edges[e1->selfwit] == e1)
 	//_(assert \wrapped(m) && e1 \in m->\owns)
 	//_(assert (e1 \in m->\owns && \wrapped(m)) ==> \wrapped(e1))
 
-	_(assert e1->\owner == \me)
-	_(assert e1->\closed)
-	_(assert \wrapped(e1))
-	_(assert \wrapped(e2))
-	_(assert \wrapped(e3))
-	_(assert \wrapped(e4))
-	_(assert \wrapped(e5))
-	_(assert \wrapped(e6))
-	_(assert \wrapped(e7))
-	_(assert \wrapped(e8))
-	_(assert \wrapped(e9))
-	_(assert \wrapped(e10))
-	_(assert \wrapped(e11))
-	_(assert \wrapped(e12))
+	//_(assert e1->\owner == \me)
+	//_(assert e1->\closed)
+	//_(assert \wrapped(e1))
+	//_(assert \wrapped(e2))
+	//_(assert \wrapped(e3))
+	//_(assert \wrapped(e4))
+	//_(assert \wrapped(e5))
+	//_(assert \wrapped(e6))
+	//_(assert \wrapped(e7))
+	//_(assert \wrapped(e8))
+	////_(assert \wrapped(e9))
+	//_(assert \wrapped(e10))
+	//_(assert \wrapped(e11))
+	//_(assert \wrapped(e12))
 
-	_(assert \wrapped(v1))
-	_(assert \wrapped(v2))
-	_(assert \wrapped(v3))
+	//_(assert \wrapped(v1))
+	//_(assert \wrapped(v2))
+	//_(assert \wrapped(v3))
 
-	_(assert \wrapped(f1))
-	_(assert \wrapped(f2))
-	_(assert \wrapped(f3))
-	_(assert \wrapped(f4))
+	//_(assert \wrapped(f1))
+	//_(assert \wrapped(f2))
+	//_(assert \wrapped(f3))
+	//_(assert \wrapped(f4))
 
 
-	_(assert e9->\owner == \me)
-	_(assert e9->\closed)
-	_(assert !\writable(e9))
+	//_(assert e9->\owner == \me)
+	//_(assert e9->\closed)
+	//_(assert !\writable(e9))
 
 	_(unwrapping e1)
 	{
@@ -356,11 +377,15 @@ _(unwrapping m)
 	}
 
 	_(unwrapping e5)
+	{
 		e5->next = e8;
-	
+	}
+
 	_(unwrapping e6)
+	{
 		e6->face = f3;
-	
+	}
+
 	_(unwrapping e7)
 	{
 		e7->face = f1;
@@ -387,12 +412,15 @@ _(unwrapping m)
 
 	_(unwrapping e10)
 	{
+		//_(assert \writable(e10->next))
+
 		e10->face = f3;
 		e10->next = e6;
 		e10->pair = e8;
 		e10->vert = e5->vert;
 	}
 
+	//_(assert !\writable(e11))
 	_(unwrapping e11)
 	{
 		e11->face = f4;

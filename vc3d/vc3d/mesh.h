@@ -121,70 +121,117 @@ typedef _(dynamic_owns) struct Mesh
 	//All pointed-to structures also belong to this mesh.
 	//Verts, then Edges, then Faces
 
-	////Verts
+
+	//Member Ownership Invariants
+
 	//_(invariant \forall size_t i;
-	//	//{:hint \mine(&verts[i]) }
-	//	//{&verts[i]}
+	//	{:hint \mine(&verts[i]) }
+	//	{verts+i}
 	//	i < numverts ==>
-	//	\in_array(verts[i].edge, edges, numedges)
+	//	\mine(verts[i].edge)
 	//)
-	
+	//_(invariant \forall size_t i;
+	//	{:hint \mine(&edges[i]) }
+	//	{edges+i}
+	//	i < numedges ==>
+	//	   \mine(edges[i].vert)
+	//	&& \mine(edges[i].pair)
+	//	&& \mine(edges[i].face)
+	//	&& \mine(edges[i].next)
+
+	//	&& \mine(edges[i].pair->next)
+	//	&& \mine(edges[i].pair->vert)
+	//)
+	//_(invariant \forall size_t i;
+	//	{:hint \mine(&faces[i]) }
+	//	{faces+i}
+	//	i < numfaces ==>
+	//	\mine(faces[i].edge)
+	//)
+
+	//Additional stuff to help verification
+	//_(invariant \forall size_t i;
+	//	{:hint \mine(&edges[i]) }
+	//	{edges+i}
+	//	i < numedges ==>
+	//	\in_array(edges[i].pair->vert, verts, numverts)
+	//)
+
+
+
+	_(invariant \forall size_t i;
+		//{:hint \mine(&edges[i]) }
+		{edges+i, &edges[i]}
+		i < numedges <==> \mine(edges+i) && \in_array(edges+i, edges, numedges))
+
+
+
+	//Regular invariants
+
+	//Verts
+	_(invariant \forall size_t i;
+		{:hint \mine(&verts[i]) }
+		//{&verts[i]}
+		i < numverts ==>
+		\in_array(verts[i].edge, edges, numedges)
+	)
+
 	//Edges
 	_(invariant \forall size_t i;
 		{:hint \mine(&edges[i]) }
-		//{&edges[i]}
 		i < numedges ==>
 
 		//\mine(&edges[i])
 		//edges[i].selfwit == i
 		
 		//Pointers from edge are valid
-		/*&& */\in_array(edges[i].vert, verts, numverts)
+	 /*&&*/\in_array(edges[i].vert, verts, numverts)
 		&& \in_array(edges[i].pair, edges, numedges)
 		&& \in_array(edges[i].face, faces, numfaces)
 		&& \in_array(edges[i].next, edges, numedges)
-		//These shouldn't be needed but I can't find a way around having them here without the admissibility check exhausting memory
-		&& \mine(edges[i].vert)
-		&& \mine(edges[i].pair)
-		&& \mine(edges[i].face)
-		&& \mine(edges[i].next)
+		
+		//&& \mine(edges[i].vert)
+		//&& \mine(edges[i].pair)
+		//&& \mine(edges[i].face)
+		//&& \mine(edges[i].next)
 
 		//Paired edge invariant
 		&& edges[i].pair->pair == &edges[i]
 		&& edges[i].vert != edges[i].pair->vert
 
+
 		//Triangle structure
 		//I've tried a lot of ways to avoid needing the next line but I think they create matching loops
-		&& \in_array(edges[i].next->next, edges, numedges)
-		&& \in_array(edges[i].next->next->next, edges, numedges)
-		&& \mine(edges[i].next->next)
-		&& \mine(edges[i].next->next->next)
+		//&& \in_array(edges[i].next->next, edges, numedges)
+		//&& \in_array(edges[i].next->next->next, edges, numedges)
+		//&& \mine(edges[i].next->next)
+		//&& \mine(edges[i].next->next->next)
 		&& edges[i].next->next->next == &edges[i]
 
 		//All edges on triangle have the same face
-		&& \in_array(edges[i].next->face, faces, numfaces)
-		&& \in_array(edges[i].next->next->face, faces, numfaces)
-		&& \mine(edges[i].next->face)
-		&& \mine(edges[i].next->next->face)
+		//&& \in_array(edges[i].next->face, faces, numfaces)
+		//&& \in_array(edges[i].next->next->face, faces, numfaces)
+		//&& \mine(edges[i].next->face)
+		//&& \mine(edges[i].next->next->face)
 		&& edges[i].face == edges[i].next->face
 		&& edges[i].face == edges[i].next->next->face
 	)
 
-	////Faces
-	//_(invariant \forall size_t i;
-	//	//{:hint \mine(&faces[i]) }
-	//	//{&faces[i]}
-	//	i < numfaces ==>
+	//Faces
+	_(invariant \forall size_t i;
+		{:hint \mine(&faces[i]) }
+		//{&faces[i]}
+		i < numfaces ==>
 
-	//	//Pointers from face are valid
-	//	\in_array(faces[i].edge, edges, numedges)
-	//	&& \mine(faces[i].edge)
+		//Pointers from face are valid
+		\in_array(faces[i].edge, edges, numedges)
+		&& \mine(faces[i].edge)
 
-	//	//This face's edge's face matches this face
-	//	&& \in_array(faces[i].edge->face, faces, numfaces)
-	//	&& \mine(faces[i].edge->face)
-	//	&& faces[i].edge->face == &faces[i]
-	//)
+		//This face's edge's face matches this face
+		//&& \in_array(faces[i].edge->face, faces, numfaces)
+		//&& \mine(faces[i].edge->face)
+		&& faces[i].edge->face == &faces[i]
+	)
 
 
 
