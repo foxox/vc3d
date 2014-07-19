@@ -159,10 +159,24 @@ typedef _(dynamic_owns) struct Mesh
 
 
 
-	_(invariant \forall size_t i;
-		//{:hint \mine(&edges[i]) }
-		{edges+i, &edges[i]}
-		i < numedges <==> \mine(edges+i) && \in_array(edges+i, edges, numedges))
+	//_(invariant \forall size_t i;
+	//	//{:hint \mine(&verts[i]) }
+	//	{verts+i, &verts[i]}
+	//	i < numverts <==> \mine(verts+i) && \in_array(verts+i, verts, numverts)
+	//)
+
+	////Try only this one if it goes bad
+	//_(invariant \forall size_t i;
+	//	//{:hint \mine(&edges[i]) }
+	//	{edges+i, &edges[i]}
+	//	i < numedges <==> \mine(edges+i) && \in_array(edges+i, edges, numedges)
+	//)
+
+	//_(invariant \forall size_t i;
+	//	//{:hint \mine(&faces[i]) }
+	//	{faces+i, &faces[i]}
+	//	i < numfaces <==> \mine(faces+i) && \in_array(faces+i, faces, numfaces)
+	//)
 
 
 
@@ -170,9 +184,11 @@ typedef _(dynamic_owns) struct Mesh
 
 	//Verts
 	_(invariant \forall size_t i;
-		{:hint \mine(&verts[i]) }
+		//{:hint \mine(&verts[i]) }
+		//{:hint \mine(verts[i].edge) }
 		//{&verts[i]}
 		i < numverts ==>
+		\mine(verts[i].edge) &&
 		\in_array(verts[i].edge, edges, numedges)
 	)
 
@@ -233,35 +249,6 @@ typedef _(dynamic_owns) struct Mesh
 		&& faces[i].edge->face == &faces[i]
 	)
 
-
-
-
-
-
-	//FACES 
-
-	//Ignore all of this: old stuff that I haven't gotten to reviewing yet
-
-	//_(invariant \forall size_t i; i < numfaces ==>
-	//	\mine(&faces[i]) &&
-
-	//	\mine(faces[i].edge->next) &&
-	//	\mine(faces[i].edge->next->next) &&
-	//	\mine(faces[i].edge->next->next->next) &&
-
-	//	//face's edge points back to face
-	//	faces[i].edge->face == &faces[i] &&
-	//	//face's edge's face pointer points back to the face
-	//
-	//	//next face matches
-	//	faces[i].edge->next->face == &faces[i] &&
-
-	//	//next next face matches (2/3 of the way around the triangle)
-	//	faces[i].edge->next->next->face == &faces[i] &&
-
-	//	//complete triangles (go around far enough to return)
-	//	faces[i].edge->next->next->next == faces[i].edge
-	//)
 
 } Mesh;
 
