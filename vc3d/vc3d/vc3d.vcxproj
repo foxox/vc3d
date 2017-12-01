@@ -97,6 +97,7 @@
     <ClInclude Include="PairedVarList2.h" />
     <ClInclude Include="PairedVarList3.h" />
     <ClInclude Include="PairedVarList4.h" />
+    <ClInclude Include="test6.h" />
     <ClInclude Include="VarSizeList1.h" />
     <ClInclude Include="owner_approval.h" />
     <ClInclude Include="PairedLists5.h" />

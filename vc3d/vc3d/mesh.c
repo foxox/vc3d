@@ -42,9 +42,9 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 	_(assert dis->numedges > 0)
 	_(assert dis->numfaces > 0)*/
 
-	dis->verts = malloc(dis->capverts*sizeof(HEVert));
-	dis->edges = malloc(dis->capedges*sizeof(HEEdge));
-	dis->faces = malloc(dis->capfaces*sizeof(HEFace));
+	dis->verts = (HEVert*)malloc(dis->capverts*sizeof(HEVert));
+	dis->edges = (HEEdge*)malloc(dis->capedges*sizeof(HEEdge));
+	dis->faces = (HEFace*)malloc(dis->capfaces*sizeof(HEFace));
 	
 	_(assume dis->verts != NULL)
 	_(assume dis->edges != NULL)
@@ -215,21 +215,28 @@ _(isolate_proof)
 void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(updates m)
 	
+	//why is this required?
+	_(updates e)
+	//since these are here too:
 	_(requires e \in m->\owns)
 	_(requires \in_array(e,m->edges,m->numedges) )
 	
 	//Verts +1
 	//Edges -2+4+4
 	//Faces -2+4
-	_(requires m->capverts-m->numverts >= 1)
-	_(requires m->capedges-m->numedges >= 6)
-	_(requires m->capfaces-m->numfaces >= 2)
+	_(requires m->capverts - m->numverts >= 1)
+	_(requires m->capedges - m->numedges >= 6)
+	_(requires m->capfaces - m->numfaces >= 2)
 
 	_(ensures m->numverts == \old(m->numverts)+1)
 	_(ensures m->numedges == \old(m->numedges)+6)
 	_(ensures m->numfaces == \old(m->numfaces)+2)
 
 {
+
+
+
+
 	//Function Body 
 
 	//Guiding assertions
@@ -237,18 +244,27 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	_(assert e->pair->next \in m->\owns)
 	//here's where those witnesses would help!
 
-	#define e1 (e)
-	#define e2 (e->next)
-	#define e3 (e->next->next)
-	#define e4 (e->pair)
-	#define e5 (e->pair->next)
-	#define e6 (e->pair->next->next)
-	#define e7 (m->edges + (m->numedges+0))
-	#define e8 (m->edges + (m->numedges+1))
-	#define e9 (m->edges + (m->numedges+2))
-	#define e10 (m->edges + (m->numedges+3))
-	#define e11 (m->edges + (m->numedges+4))
-	#define e12 (m->edges + (m->numedges+5))
+	//#define e1 (e)
+	//#define e2 (e->next)
+	//#define e3 (e->next->next)
+	//#define e4 (e->pair)
+	//#define e5 (e->pair->next)
+	//#define e6 (e->pair->next->next)
+	//#define e7 (m->edges + (m->numedges+0))
+	//#define e8 (m->edges + (m->numedges+1))
+	//#define e9 (m->edges + (m->numedges+2))
+	//#define e10 (m->edges + (m->numedges+3))
+	//#define e11 (m->edges + (m->numedges+4))
+	//#define e12 (m->edges + (m->numedges+5))
+
+	//#define v1 (e->pair->vert)
+	//#define v2 (e->vert)
+	//#define v3 (&m->verts[m->numverts])
+
+	//#define f1 (e->face)
+	//#define f2 (e->pair->face)
+	//#define f3 (m->faces + (m->numfaces+0))
+	//#define f4 (m->faces + (m->numfaces+1))
 
 	//_(assert m->numedges < m->capedges)
 	//_(assert m->numedges < m->capedges-4)
@@ -266,13 +282,8 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	//_(assert \in_array(e,m->edges,m->numedges))
 	//_(assert e->pair->vert \in m->\owns)
 
-	//HEVert* v1 = e->pair->vert;
-	//HEVert* v2 = e->vert;
-	////HEVert* v3 = m->verts + (m->numverts+0);
-	//HEVert* v3 = &m->verts[m->numverts];
-	#define v1 (e->pair->vert)
-	#define v2 (e->vert)
-	#define v3 (&m->verts[m->numverts])
+
+
 	
 	//_(assert v1 \in m->\owns)
 	//_(assert v2 \in m->\owns)
@@ -283,14 +294,28 @@ void MeshSplitEdge(Mesh *m, HEEdge* e)
 	//_(assert \exists size_t i; i < m->numverts && v1 == &m->verts[i])
 	//_(assert \exists size_t i; i < m->numverts && v2 == &m->verts[i])
 
-	//HEFace* f1 = e->face;
-	//HEFace* f2 = e->pair->face;
-	//HEFace* f3 = m->faces + (m->numfaces+0);
-	//HEFace* f4 = m->faces + (m->numfaces+1);
-	#define f1 (e->face)
-	#define f2 (e->pair->face)
-	#define f3 (m->faces + (m->numfaces+0))
-	#define f4 (m->faces + (m->numfaces+1))
+
+
+	HEEdge* e1 = (e);
+	HEEdge* e2 = (e->next);
+	HEEdge* e3 = (e->next->next);
+	HEEdge* e4 = (e->pair);
+	HEEdge* e5 = (e->pair->next);
+	HEEdge* e6 = (e->pair->next->next);
+	HEEdge* e7 = (m->edges + (m->numedges+0));
+	HEEdge* e8 = (m->edges + (m->numedges+1));
+	HEEdge* e9 = (m->edges + (m->numedges+2));
+	HEEdge* e10 = (m->edges + (m->numedges+3));
+	HEEdge* e11 = (m->edges + (m->numedges+4));
+	HEEdge* e12 = (m->edges + (m->numedges+5));
+
+	HEVert* v1 = e->pair->vert;
+	HEVert* v2 = e->vert;
+	HEVert* v3 = &(m->verts[m->numverts]);
+	HEFace* f1 = e->face;
+	HEFace* f2 = e->pair->face;
+	HEFace* f3 = m->faces + (m->numfaces+0);
+	HEFace* f4 = m->faces + (m->numfaces+1);
 
 	_(assert e1 \in m->\owns)
 	_(assert e2 \in m->\owns)
@@ -362,7 +387,7 @@ _(unwrap m)
 
 	//Now reassign things
 
-	_(assert \writable(e1))
+	//_(assert \writable(e1))
 	_(assert \wrapped(e1))
 	_(unwrapping e1)
 	{
@@ -371,7 +396,7 @@ _(unwrap m)
 		e1->vert = v3;
 	}
 
-	_(assert \writable(e2))
+	//_(assert \writable(e2))
 	_(assert \wrapped(e2))
 	_(unwrapping e2)
 	{
@@ -379,14 +404,14 @@ _(unwrap m)
 		e2->next = e12;
 	}
 
-	_(assert \writable(e3))
+	//_(assert \writable(e3))
 	_(assert \wrapped(e3))
 	_(unwrapping e3)
 	{
 		e3->face = f1;
 	}
 
-	_(assert \writable(e4))
+	//_(assert \writable(e4))
 	_(assert \wrapped(e4))
 	_(unwrapping e4)
 	{
@@ -396,21 +421,21 @@ _(unwrap m)
 		e4->vert = v3;
 	}
 
-	_(assert \writable(e5))
+	//_(assert \writable(e5))
 	_(assert \wrapped(e5))
 	_(unwrapping e5)
 	{
 		e5->next = e8;
 	}
 
-	_(assert \writable(e6))
+	//_(assert \writable(e6))
 	_(assert \wrapped(e6))
 	_(unwrapping e6)
 	{
 		e6->face = f3;
 	}
 
-	_(assert \writable(e7))
+	//_(assert \writable(e7))
 	_(assert \wrapped(e7))
 	_(unwrapping e7)
 	{
@@ -420,8 +445,8 @@ _(unwrap m)
 		e7->vert = e2->vert;
 	}
 
+	//_(assert \writable(e8))
 	_(assert \wrapped(e8))
-	_(assert \writable(e8))
 	_(unwrapping e8)
 	{
 		e8->face = f2;
@@ -430,7 +455,7 @@ _(unwrap m)
 		e8->vert = v3;
 	}
 
-	_(assert \writable(e9))
+	//_(assert \writable(e9))
 	_(assert \wrapped(e9))
 	_(unwrapping e9)
 	{
@@ -440,7 +465,7 @@ _(unwrap m)
 		e9->vert = v1;
 	}
 
-	_(assert \writable(e10))
+	//_(assert \writable(e10))
 	_(assert \wrapped(e10))
 	_(unwrapping e10)
 	{
@@ -450,7 +475,7 @@ _(unwrap m)
 		e10->vert = e5->vert;
 	}
 
-	_(assert \writable(e11))
+	//_(assert \writable(e11))
 	_(assert \wrapped(e11))
 	_(unwrapping e11)
 	{
@@ -460,7 +485,7 @@ _(unwrap m)
 		e11->vert = v2;
 	}
 
-	_(assert \writable(e12))
+	//_(assert \writable(e12))
 	_(assert \wrapped(e12))
 	_(unwrapping e12)
 	{
@@ -486,7 +511,7 @@ _(unwrap m)
 		v3->edge = e9;
 	}
 
-	_(assert \writable(f1))
+	//_(assert \writable(f1))
 	_(unwrapping f1)
 	{
 		f1->edge = e3;
@@ -507,31 +532,61 @@ _(unwrap m)
 		f4->edge = e2;
 	}
 
-	//_(assert m->numverts == \old(m->numverts))
-	//_(assert m->numedges == \old(m->numedges))
-	//_(assert m->numfaces == \old(m->numfaces))
-
-	//_(assert m->numverts < 10000)
-	//_(assert m->numedges < 10000)
-	//_(assert m->numfaces < 10000)
+	//VCC gets here in 68 seconds
+	//_(assert false)
 
 	m->numverts += 1;
 	m->numedges += 6;
 	m->numfaces += 2;
 
-	_(assert m->numverts == \old(m->numverts)+1)
-	_(assert m->numedges == \old(m->numedges)+6)
-	_(assert m->numfaces == \old(m->numfaces)+2)
+	//_(assert m->numverts == \old(m->numverts)+1)
+	//_(assert m->numedges == \old(m->numedges)+6)
+	//_(assert m->numfaces == \old(m->numfaces)+2)
 
-	_(assert \in_array(m->edges + (\old(m->numedges)+2), m->edges,m->capedges))
-	_(assert m->numedges == \old(m->numedges)+6)
-	_(assert \in_array(m->edges + (m->numedges+2), m->edges,m->numedges))
+	//VCC gets here in 131 seconds
+	//107 seconds without the 3 above assertions
+	//_(assert false)
+
+//	_(assert \in_array(m->edges + (\old(m->numedges)+2), m->edges,m->capedges))
+	//_(assert m->numedges == \old(m->numedges)+6)
+
+
+	//_(assert \in_array(m->edges + (m->numedges+2), m->edges,m->numedges))
 
 	_(assert \in_array(e1,m->edges,m->numedges))
 	_(assert \in_array(e4,m->edges,m->numedges))
 	_(assert \in_array(e9,m->edges,m->numedges))
+
+	//VCC gets here in 60 seconds now
+	//_(assert false)
+
 	_(assert \in_array(v1->edge,m->edges,m->numedges))
 	_(assert \in_array(v2->edge,m->edges,m->numedges))
 	_(assert \in_array(v3->edge,m->edges,m->numedges))
+
+	//VCC gets here in 20 seconds
+	//_(assert false)
+
+	_(assert e1->pair->pair == e1)
+	_(assert e2->pair->pair == e2)
+	_(assert e3->pair->pair == e3)
+
+	_(assert false)
+
+	_(assert e4->pair->pair == e4)
+	_(assert e5->pair->pair == e5)
+	_(assert e6->pair->pair == e6)
+
+	_(assert false)
+
+	_(assert e7->pair->pair == e7)
+	_(assert e8->pair->pair == e8)
+	_(assert e9->pair->pair == e9)
+
+	_(assert false)
+
+	_(assert e10->pair->pair == e10)
+	_(assert e11->pair->pair == e11)
+	_(assert e12->pair->pair == e12)
 _(wrap m)
 }
