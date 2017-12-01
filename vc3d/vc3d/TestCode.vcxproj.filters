@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="xTesting">
+      <UniqueIdentifier>{6b8acd5f-2cf3-46a9-8687-d75ca0ab71e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ContainedArrayContainer1.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+    <ClCompile Include="WeirdFailures.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh_witnesses.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+    <ClCompile Include="PairedListsWorkingSimplified.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh_reduced.c">
+      <Filter>xTesting</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CombiningInvariants1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeMatchingLoops01.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList2.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedVarList4.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="VarSizeList1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="owner_approval.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedLists5.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedLists6.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedListsWorking.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList2.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList4.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairList.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="StructArray1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="StructArrayContainer1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="StructContainer1.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test2.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test3.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test4.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test5.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="test6.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh_witnesses.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="PairedListsWorkingSimplified.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh_reduced.h">
+      <Filter>xTesting</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

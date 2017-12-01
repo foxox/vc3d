@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="xTesting">
-      <UniqueIdentifier>{a1fa3e9c-e782-417e-b768-46cee437bb99}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -30,15 +27,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="foxmath3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WeirdFailures.c">
-      <Filter>xTesting</Filter>
-    </ClCompile>
-    <ClCompile Include="ContainedArrayContainer1.c">
-      <Filter>xTesting</Filter>
-    </ClCompile>
-    <ClCompile Include="mesh_witnesses.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,87 +48,6 @@
     </ClInclude>
     <ClInclude Include="foxmath3.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="test4.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="StructArray1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="StructArrayContainer1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="StructContainer1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="test2.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="test3.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedLists5.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairList4.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedLists6.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairList.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairList2.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairList3.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="owner_approval.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="CombiningInvariants1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="test5.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedListsWorking.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="VarSizeList1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedVarList1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="mesh1.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="mesh3.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedVarList2.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedVarList3.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="PairedVarList4.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="mesh_witnesses.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeMatchingLoops01.h">
-      <Filter>xTesting</Filter>
-    </ClInclude>
-    <ClInclude Include="test6.h">
-      <Filter>xTesting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

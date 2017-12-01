@@ -175,15 +175,15 @@ void MeshInitMeshUnitTriangle(Mesh* dis)
 
 
 	//Array Objects
-	//_(ghost dis->vertsao = (HEVert[dis->capverts])dis->verts )
-	//_(ghost dis->edgesao = (HEVert[dis->capedges])dis->edges )
-	//_(ghost dis->facesao = (HEVert[dis->capfaces])dis->faces )
-	//_(ghost dis->\owns += dis->vertsao)
-	//_(ghost dis->\owns += dis->edgesao)
-	//_(ghost dis->\owns += dis->facesao)
-	//_(wrap dis->vertsao)
-	//_(wrap dis->edgesao)
-	//_(wrap dis->facesao)
+	_(ghost dis->vertsao = (HEVert[dis->capverts])dis->verts )
+	_(ghost dis->edgesao = (HEVert[dis->capedges])dis->edges )
+	_(ghost dis->facesao = (HEVert[dis->capfaces])dis->faces )
+	_(ghost dis->\owns += dis->vertsao)
+	_(ghost dis->\owns += dis->edgesao)
+	_(ghost dis->\owns += dis->facesao)
+	_(wrap dis->vertsao)
+	_(wrap dis->edgesao)
+	_(wrap dis->facesao)
 
 	_(wrap dis)
 }
@@ -589,4 +589,98 @@ _(unwrap m)
 	_(assert e11->pair->pair == e11)
 	_(assert e12->pair->pair == e12)
 _(wrap m)
+}
+
+_(isolate_proof)
+void MeshDisposeMesh(Mesh* dis)
+_(requires \wrapped(dis))
+_(writes dis)
+_(ensures \extent_mutable(dis))
+{
+	_(unwrap dis)
+
+	_(assert \forall size_t i; i < dis->capedges ==> \wrapped(dis->edges+i))
+	_(assert \forall size_t i; i < dis->capverts ==> \wrapped(dis->verts+i))
+	_(assert \forall size_t i; i < dis->capfaces ==> \wrapped(dis->faces+i))
+
+	_(unwrap dis->edgesao)
+	_(unwrap dis->vertsao)
+	_(unwrap dis->facesao)
+
+	size_t i;
+
+
+	//free edges
+	//loop over edges array, unwrapping each edge
+	for (i = 0; i < dis->capedges; i++)
+		_(writes \array_members(dis->edges, dis->capedges))
+		_(invariant \forall size_t j; j >= i && j < dis->capedges ==> \wrapped(dis->edges+j))
+		_(invariant \forall size_t j; j < i ==> \mutable(dis->edges+j))
+	{
+		_(unwrap dis->edges+i)
+		//printf("disposing...\n");
+	}
+	free( _(HEEdge[dis->capedges]) dis->edges);
+
+	//free verts
+	//loop over verts array, unwrapping each edge
+	for (i = 0; i < dis->capverts; i++)
+		_(writes \array_members(dis->verts, dis->capverts))
+		_(invariant \forall size_t j; j >= i && j < dis->capverts ==> \wrapped(dis->verts+j))
+		_(invariant \forall size_t j; j < i ==> \mutable(dis->verts+j))
+	{
+		_(unwrap dis->verts+i)
+	}
+	free( _(HEVert[dis->capverts]) dis->verts);
+
+	//free faces
+	//loop over faces array, unwrapping each edge
+	for (i = 0; i < dis->capfaces; i++)
+		_(writes \array_members(dis->faces, dis->capfaces))
+		_(invariant \forall size_t j; j >= i && j < dis->capfaces ==> \wrapped(dis->faces+j))
+		_(invariant \forall size_t j; j < i ==> \mutable(&dis->faces[j]))
+	{
+		_(unwrap dis->faces+i)
+	}
+	free( _(HEFace[dis->capfaces]) dis->faces);
+}
+
+
+
+
+
+void MeshUpdateVertPos(Mesh* m, HEVert* v, Vec3 newPos)
+	_(updates m)
+	_(updates v)
+
+	_(requires v \in m->\owns)
+	//_(ensures m == \old(m))
+	_(ensures v->pos.x == newPos.x)
+	_(ensures v->pos.y == newPos.y)
+	_(ensures v->pos.z == newPos.z)
+{
+	_(unwrapping v)
+	{
+		v->pos = newPos;
+	}
+}
+
+//void HEVertUpdatePos(HEVert* v, Vec3 newPos)
+//	_(updates v)
+//	_(ensures v->pos.x == newPos.x)
+//	_(ensures v->pos.y == newPos.y)
+//	_(ensures v->pos.z == newPos.z)
+//{
+//	_(unwrapping v)
+//	{
+//		v->pos = newPos;
+//	}
+//}
+
+void MeshTester()
+{
+	Mesh m;
+	MeshInitMeshUnitTriangle(&m);
+
+	MeshDisposeMesh(&m);
 }

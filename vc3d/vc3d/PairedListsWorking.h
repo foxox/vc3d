@@ -1,7 +1,8 @@
 //100% WORKING PAIRED LISTS IMPLEMENTATION
  
 #include <vcc.h>
-#include <cstdlib>   //malloc
+//#include <cstdlib>   //malloc
+#include <stdlib.h>   //malloc
  
 typedef struct Paired Paired;
  
@@ -19,6 +20,9 @@ typedef _(dynamic_owns) struct PairedLists
 	//The maximum sizes of the following arrays
 	size_t num1;
 	size_t num2;
+
+	_(invariant num1 > 0)
+	_(invariant num2 > 0)
  
 	//Heap arrays storing Paired objects
 	Paired* pairarray1;

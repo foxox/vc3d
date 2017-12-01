@@ -9,6 +9,8 @@
 #include "tools.h"
 #include "model.h"
 
+#include "mesh.h"
+
 //This is something like the View in MVC
 
 //static const HEVert vertexBufferData[] =
@@ -16,6 +18,13 @@
 //	{{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
 //	{{1.0f, -1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
 //	{{0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}
+//};
+
+//static const float vertexBufferData[] =
+//{
+//	0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+//	0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+//	1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f
 //};
 
 static const float vertexBufferData[] =
@@ -248,8 +257,19 @@ void onDisplay(void)
 
 	glUseProgram(theProgram);
 
+
+
+
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, 18*sizeof(GL_FLOAT), vertexBufferData, GL_DYNAMIC_DRAW);
+
+
+
+
+
+
 
 	//ViewMatrix = Mat4Transpose(Mat4GenTranslate(3.0f*sinf(omega), 0, 0));
 	//ViewMatrix = Mat4GenLookAtTransform(Vec3GenVec3(0,0,5), Vec3GenVec3(0,0,0), Vec3GenVec3(0,1,0));
@@ -337,8 +357,10 @@ int main(int argc, char** argv)
 		//printf("%f, ", test.mat[i]);
 	//printf("mat num %f %f %f", test.mat[1][3], *(test.mat+13), *((float*)test.mat+13));
 
-	Mesh somemesh;
-	//MeshInitMesh(&somemesh);
+
+
+	//Mesh somemesh;
+	//MeshInitMeshUnitTriangle(&somemesh);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);

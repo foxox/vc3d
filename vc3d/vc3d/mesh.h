@@ -86,27 +86,26 @@ typedef _(dynamic_owns) struct Mesh
 	_(invariant \arrays_disjoint(verts,capverts,edges,capedges))
 	_(invariant \arrays_disjoint(verts,capverts,faces,capfaces))
 	_(invariant \arrays_disjoint(edges,capedges,faces,capfaces))
-
-
+	_(invariant verts != edges)
+	_(invariant edges != faces)
+	_(invariant faces != verts)
 
 
 	//Array Objects
 	//(needed for disposal?)
-	//_(ghost \object vertsao )
-	//_(ghost \object edgesao )
-	//_(ghost \object facesao )
-	//_(invariant vertsao == (HEEdge[capverts])verts )
-	//_(invariant edgesao == (HEEdge[capedges])edges )
-	//_(invariant facesao == (HEEdge[capfaces])faces )
-	//_(invariant \mine(vertsao) )
-	//_(invariant \mine(edgesao) )
-	//_(invariant \mine(facesao) )
-	//_(invariant vertsao != edgesao && vertsao != facesao && edgesao != facesao)
-	//_(invariant \malloc_root(vertsao))
-	//_(invariant \malloc_root(edgesao))
-	//_(invariant \malloc_root(facesao))
-
-
+	_(ghost \object vertsao )
+	_(ghost \object edgesao )
+	_(ghost \object facesao )
+	_(invariant vertsao == (HEVert[capverts])verts )
+	_(invariant edgesao == (HEEdge[capedges])edges )
+	_(invariant facesao == (HEFace[capfaces])faces )
+	_(invariant \mine(vertsao) )
+	_(invariant \mine(edgesao) )
+	_(invariant \mine(facesao) )
+	_(invariant vertsao != edgesao && vertsao != facesao && edgesao != facesao)
+	_(invariant \malloc_root(vertsao))
+	_(invariant \malloc_root(edgesao))
+	_(invariant \malloc_root(facesao))
 
 
 
@@ -183,6 +182,8 @@ typedef _(dynamic_owns) struct Mesh
 	//	{&faces[i]}
 	//	i < numfaces <==> \mine(faces+i) && \in_array(faces+i, faces, numfaces)
 	//)
+
+
 
 
 
@@ -266,8 +267,9 @@ typedef _(dynamic_owns) struct Mesh
 HEVert HEVertMat4Transform(HEVert, Mat4);
 HEVert HEVertMat4TransformNormal(HEVert, Mat4);
 
-void MeshInitMesh(Mesh* dis);
-void MeshSplitEdge(Mesh *m, HEEdge* edge);
+void MeshInitMeshUnitTriangle(Mesh* dis);
+void MeshSplitEdge(Mesh *dis, HEEdge* edge);
+void MeshDisposeMesh(Mesh* dis);
 
 
 //ARCHIVE
