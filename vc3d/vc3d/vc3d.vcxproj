@@ -81,6 +81,7 @@
     <ClCompile Include="foxmath3.c" />
     <ClCompile Include="mesh.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="mesh_witnesses2.c" />
     <ClCompile Include="model.c" />
     <ClCompile Include="scenegraph.c" />
     <ClCompile Include="tools.c" />
@@ -89,6 +90,7 @@
     <ClInclude Include="commonheader.h" />
     <ClInclude Include="foxmath3.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="mesh_witnesses2.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="scenegraph.h" />
     <ClInclude Include="tools.h" />

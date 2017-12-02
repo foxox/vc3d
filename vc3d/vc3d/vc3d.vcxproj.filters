@@ -29,6 +29,9 @@
     <ClCompile Include="foxmath3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mesh_witnesses2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools.h">
@@ -47,6 +50,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="foxmath3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh_witnesses2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

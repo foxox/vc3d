@@ -92,19 +92,19 @@ typedef _(dynamic_owns) struct Mesh
 
 	//Array Objects
 	//(needed for disposal?)
-	//_(ghost \object vertsao )
-	//_(ghost \object edgesao )
-	//_(ghost \object facesao )
-	//_(invariant vertsao == (HEEdge[capverts])verts )
-	//_(invariant edgesao == (HEEdge[capedges])edges )
-	//_(invariant facesao == (HEEdge[capfaces])faces )
-	//_(invariant \mine(vertsao) )
-	//_(invariant \mine(edgesao) )
-	//_(invariant \mine(facesao) )
-	//_(invariant vertsao != edgesao && vertsao != facesao && edgesao != facesao)
-	//_(invariant \malloc_root(vertsao))
-	//_(invariant \malloc_root(edgesao))
-	//_(invariant \malloc_root(facesao))
+	_(ghost \object vertsao )
+	_(ghost \object edgesao )
+	_(ghost \object facesao )
+	_(invariant vertsao == (HEEdge[capverts])verts )
+	_(invariant edgesao == (HEEdge[capedges])edges )
+	_(invariant facesao == (HEEdge[capfaces])faces )
+	_(invariant \mine(vertsao) )
+	_(invariant \mine(edgesao) )
+	_(invariant \mine(facesao) )
+	_(invariant vertsao != edgesao && vertsao != facesao && edgesao != facesao)
+	_(invariant \malloc_root(vertsao))
+	_(invariant \malloc_root(edgesao))
+	_(invariant \malloc_root(facesao))
 
 
 	//Array Elements are all \mine
@@ -122,7 +122,7 @@ typedef _(dynamic_owns) struct Mesh
 	//Verts
 	_(invariant \forall size_t i;
 		{:hint \mine(&verts[i]) }
-		{:hint verts[i].edgeindexwit < numedges}
+		//{:hint verts[i].edgeindexwit < numedges}
 		//{&verts[i]}
 		i < numverts ==>
 		//i < capverts
